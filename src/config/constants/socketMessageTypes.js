@@ -4,7 +4,5 @@ const MESSAGE_TYPE = {
 };
 
 export default {
-  WEB_SOCKET: {
-    MESSAGE_TYPE,
-  },
+  MESSAGE_TYPE,
 };

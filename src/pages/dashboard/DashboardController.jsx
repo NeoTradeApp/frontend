@@ -16,9 +16,7 @@ function DashboardController() {
           <Typography variant="h5" component="div">
             Nifty 50
           </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <Nifty50 />
-          </Typography>
+          <Nifty50 />
         </CardContent>
       </Card>
     </Grid>
