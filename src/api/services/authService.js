@@ -11,4 +11,7 @@ export const validateOtpApi = (otp) =>
 export const validateOtpSession = () =>
   apiClient.post("/auth/validate-otp-session");
 
+export const userProfile = () =>
+  apiClient.get("/users/profile");
+
 export const logoutApi = () => apiClient.post("/auth/logout");

@@ -1,29 +1,44 @@
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { socketService } from "../services/webSockets";
-import useWebSocket from "../hooks/useWebSocket";
-import { setNifty50 } from "../redux/marketFeedSlice";
+import { useNavigate, Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuthentionStatus, setUser } from "../redux/userSlice";
+import { socketService } from "../services/socketService";
 import Header from "./Header";
-import { WEB_SOCKET } from "../config/constants";
+import { userProfile } from "../api/services/authService";
 
 function Authenticated() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [marketData] = useWebSocket(WEB_SOCKET.MESSAGE_TYPE.MARKET_FEED);
-
-  useEffect(() => {
-    const [nifty50] = marketData || [{}];
-    dispatch(setNifty50(nifty50));
-  }, [marketData]);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    socketService.connect();
+    if (user.isAuthenticated) {
+      return;
+    }
+
+    userProfile()
+      .then(({ data: userDetails }) => {
+        dispatch(
+          setUser({
+            ...userDetails,
+            isAuthenticated: true,
+          })
+        );
+
+        socketService.connect();
+      })
+      .catch((error) => {
+        console.error(error);
+        socketService.disconnect();
+
+        navigate("/login");
+        dispatch(setAuthentionStatus(false));
+      });
 
     return () => {
       socketService.disconnect();
     };
-  }, []);
+  }, [user]);
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const marketFeedSlice = createSlice({
-  name: "marketFeed1",
+  name: "marketFeed",
   initialState: {
     nifty50: {},
   },

@@ -14,8 +14,12 @@ function SocketService() {
       };
 
       this.socket.onmessage = (event) => {
-        const { type, data } = JSON.parse(event.data);
-        notifySubscribers(type, data);
+        try {
+          const { type, data } = JSON.parse(event.data);
+          notifySubscribers(type, data);
+        } catch (error) {
+          console.error(event.data);
+        }
       };
 
       this.socket.onclose = () => {

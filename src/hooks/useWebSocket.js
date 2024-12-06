@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { socketService } from "../services/webSockets";
+import { socketService } from "../services/socketService";
 
 const useWebSocket = (type) => {
   const [socketData, setSocketData] = useState();
