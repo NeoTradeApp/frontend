@@ -9,8 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { setAuthentionStatus } from "../redux/userSlice";
-import { logoutApi } from "../api/services/authService";
+import { setAuthentionStatus } from "@redux/userSlice";
+import { logoutApi } from "@api";
 
 function Header() {
   const navigate = useNavigate();

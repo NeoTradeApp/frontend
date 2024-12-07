@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Snackbar as MuiSnackBar } from "@mui/material";
-import { close as closeSnackbar } from "../redux/snackbarSlice";
+import { closeSnackbar } from "@redux";
 
 function Snackbar() {
   const dispatch = useDispatch();

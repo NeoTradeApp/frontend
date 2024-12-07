@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthentionStatus, setUser } from "../redux/userSlice";
-import { socketService } from "../services/socketService";
+import { setAuthentionStatus, setUser } from "@redux";
+import { socketService } from "@services";
 import Header from "./Header";
-import { userProfile } from "../api/services/authService";
+import { userProfileApi } from "@api";
 
 function Authenticated() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ function Authenticated() {
       return;
     }
 
-    userProfile()
+    userProfileApi()
       .then(({ data: userDetails }) => {
         dispatch(
           setUser({

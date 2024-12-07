@@ -41,7 +41,7 @@ function SocketService() {
     }
   };
 
-  this.subscribe = (callback, type = "message") => {
+  this.subscribe = (type, callback) => {
     this.subscribers[type] ||= [];
     this.subscribers[type].push(callback);
     return () => {

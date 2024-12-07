@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { FormControlInput } from "../../../components";
+import { FormControlInput } from "@components";
 
 function Password(props) {
   const { value, onChange: emitChange } = props;

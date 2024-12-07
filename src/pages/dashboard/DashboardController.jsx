@@ -1,5 +1,5 @@
 import { Grid2 as Grid, Card, CardContent, Typography } from "@mui/material";
-import { Nifty50 } from "../../components";
+import { Nifty50 } from "@components";
 
 function DashboardController() {
   return (

@@ -4,10 +4,10 @@ import { useDispatch } from "react-redux";
 import {
   resendOtpApi,
   validateOtpApi,
-  validateOtpSession,
-} from "../../api/services/authService";
+  validateOtpSessionApi,
+} from "@api";
+import { openSnackbar } from "@redux";
 import OtpView from "./OtpView";
-import { open as openSnackbar } from "../../redux/snackbarSlice";
 
 function OtpController() {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ function OtpController() {
     });
 
   useEffect(() => {
-    validateOtpSession().catch((error) => {
+    validateOtpSessionApi().catch((error) => {
       dispatch(openSnackbar(error.message));
       navigate("/login");
     });

@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const { REACT_APP_BACKEND_HOST_URL } = process.env;
+const { REACT_APP_BACKEND_HOST_URL, REACT_APP_BACKEND_API_VERSION } =
+  process.env;
 
-const API_VERSION = "v1";
-
-const url = (path) => `${REACT_APP_BACKEND_HOST_URL}/api/${API_VERSION}${path}`;
+const url = (path) =>
+  `${REACT_APP_BACKEND_HOST_URL}/api/${REACT_APP_BACKEND_API_VERSION}${path}`;
 
 const defaultOptions = { withCredentials: true };
 

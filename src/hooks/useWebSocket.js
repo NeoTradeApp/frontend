@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { socketService } from "../services/socketService";
+import { socketService } from "@services";
 
 const useWebSocket = (type) => {
   const [socketData, setSocketData] = useState();
 
   useEffect(() => {
-    const unsubscribe = socketService.subscribe((newSocketData) => {
+    const unsubscribe = socketService.subscribe(type, (newSocketData) => {
       setSocketData(newSocketData);
-    }, type);
+    });
 
     // Cleanup on unmount
     return () => {

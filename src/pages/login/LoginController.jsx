@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { loginApi } from "../../api/services/authService";
+import { loginApi } from "@api";
 import LoginView from "./LoginView";
 
 function LoginController() {

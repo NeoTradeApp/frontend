@@ -9,17 +9,17 @@ const snackbarSlice = createSlice({
   name: "snackbar",
   initialState,
   reducers: {
-    open: (state, action) => {
+    openSnackbar: (state, action) => {
       state.open = true;
       state.message = action.payload;
     },
-    close: (state) => {
+    closeSnackbar: (state) => {
       state.open = false;
       state.message = "";
     },
   },
 });
 
-export const { open, close } = snackbarSlice.actions;
+export const { openSnackbar, closeSnackbar } = snackbarSlice.actions;
 
 export default snackbarSlice.reducer;
