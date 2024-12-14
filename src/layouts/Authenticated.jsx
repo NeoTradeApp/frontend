@@ -9,21 +9,17 @@ import { userProfileApi } from "@api";
 function Authenticated() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   useEffect(() => {
-    if (user.isAuthenticated) {
+    if (isAuthenticated) {
       return;
     }
 
     userProfileApi()
       .then(({ data: userDetails }) => {
-        dispatch(
-          setUser({
-            ...userDetails,
-            isAuthenticated: true,
-          })
-        );
+        dispatch(setAuthentionStatus(true));
+        dispatch(setUser(userDetails));
 
         socketService.connect();
       })
@@ -38,7 +34,7 @@ function Authenticated() {
     return () => {
       socketService.disconnect();
     };
-  }, [user]);
+  }, [isAuthenticated]);
 
   return (
     <>

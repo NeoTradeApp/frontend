@@ -3,7 +3,13 @@ import { Typography } from "@mui/material";
 
 function Nifty50() {
   const nifty50 = useSelector((state) => state.marketFeed.nifty50);
-  const color = parseInt(nifty50.cng) > 0 ? "success" : "error";
+  const isPositive = parseInt(nifty50.cng || 0) >= 0;
+  const color = isPositive ? "success" : "error";
+
+  const valueWithSign = (value) => {
+    const sign = isPositive ? "+" : "";
+    return value ? `${sign}${value}` : "00.00";
+  };
 
   return (
     <>
@@ -13,7 +19,7 @@ function Nifty50() {
         sx={{ flexGrow: 1 }}
         color={color}
       >
-        {nifty50.iv}
+        {nifty50.iv || "0000.00"}
       </Typography>
       <Typography
         variant="h6"
@@ -21,7 +27,7 @@ function Nifty50() {
         sx={{ flexGrow: 1 }}
         color={color}
       >
-        {nifty50.cng} ({nifty50.nc}%)
+        {valueWithSign(nifty50.cng)} ({valueWithSign(nifty50.nc)} %)
       </Typography>
     </>
   );

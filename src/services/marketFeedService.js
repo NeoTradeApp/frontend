@@ -7,7 +7,9 @@ export const subscribeMarketFeed = () => {
     WEB_SOCKET.MESSAGE_TYPE.MARKET_FEED,
     (marketData) => {
       const [nifty50] = marketData || [{}];
-      store.dispatch(setNifty50(nifty50));
+      if (nifty50.iv) {
+        store.dispatch(setNifty50(nifty50));
+      }
     }
   );
 
