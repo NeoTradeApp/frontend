@@ -16,5 +16,16 @@ module.exports = {
       "@services": path.resolve(__dirname, "src/services"),
       "@utils": path.resolve(__dirname, "src/utils"),
     },
+    configure: (webpackConfig) => {
+      // Fixes MUI ESM "fully specified" errors
+      webpackConfig.module.rules.push({
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      });
+
+      return webpackConfig;
+    },
   },
 };

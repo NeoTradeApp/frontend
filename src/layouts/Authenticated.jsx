@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import ThemeLayout from "./ThemeLayout";
+
 import { setAuthentionStatus, setUser } from "@redux";
 import { socketService } from "@services";
-import Header from "./Header";
 import { userProfileApi } from "@api";
 
 function Authenticated() {
@@ -38,8 +39,7 @@ function Authenticated() {
 
   return (
     <>
-      <Header />
-      <Outlet />
+      <ThemeLayout />
     </>
   );
 }
