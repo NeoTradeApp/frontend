@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { LineChart } from "@components";
+import { BacktestConfigForm } from "./components";
 
 const testSeries = [
   {
@@ -11,33 +12,16 @@ const testSeries = [
         time: "June 1, 2025",
         pnl: 350
       },
-      {
-        time: "June 2, 2025",
-        pnl: 500
-      },
-      {
-        time: "June 3, 2025",
-        pnl: 1000
-      },
-      {
-        time: "June 4, 2025",
-        pnl: 1100
-      },
-      {
-        time: "June 5, 2025",
-        pnl: 1150
-      },
-      {
-        time: "June 6, 2025",
-        pnl: 950
-      }
     ]
   }
 ]
 
-function BacktestView() {
+function BacktestView(props) {
+  const { onSubmit: emitSubmit } = props;
+
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <BacktestConfigForm onSubmit={emitSubmit} />
       <LineChart dataSet={testSeries} />
     </Box>
   );

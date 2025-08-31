@@ -6,3 +6,7 @@ export {
   userProfileApi,
   logoutApi,
 } from "./authApis";
+
+export {
+  backtest,
+} from "./backtestApis";

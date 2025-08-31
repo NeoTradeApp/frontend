@@ -35,7 +35,7 @@ function LineChart(props) {
 
     setXData(chartData.xData);
     setSeries(chartData.series);
-  }, [series]);
+  }, [dataSet]);
 
   return (
     <MuiLineChart

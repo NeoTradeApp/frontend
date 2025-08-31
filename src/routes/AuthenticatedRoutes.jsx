@@ -6,7 +6,7 @@ function AuthenticatedRoutes() {
   return (
     <Routes>
       <Route element={<Authenticated />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" exact element={<Dashboard />} />
         <Route path="/backtest" element={<Backtest />} />
       </Route>
     </Routes>

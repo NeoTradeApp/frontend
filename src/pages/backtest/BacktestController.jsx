@@ -1,7 +1,14 @@
+import {
+  backtest
+} from "@api";
 import BacktestView from "./BacktestView";
 
 function BacktestController() {
-  return <BacktestView />;
+  const handleSubmit = async (params) => {
+    await backtest(params);
+  };
+
+  return <BacktestView onSubmit={handleSubmit} />;
 }
 
 export default BacktestController;

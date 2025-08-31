@@ -39,7 +39,6 @@ function ThemeLayout() {
     setOpen(false);
   };
 
-  console.log("OUTER", open);
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
