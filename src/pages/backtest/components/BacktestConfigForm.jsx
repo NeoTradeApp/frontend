@@ -10,20 +10,39 @@ import {
 } from '@mui/material';
 import DropDown from './DropDown';
 
+import Drawer from '@mui/material/Drawer';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+
+
+const drawerWidth = 300;
+
 const CONFIG_PARAMS = [
   {
     label: "Index FUT / Stock",
-    name: "index",
+    name: "file",
     type: "dropdown",
-    defaultValue: "NIFTY_50",
+    defaultValue: "NIFTY_50_2019_2025.csv",
     options: [
-      { label: "Nifty 50", value: "NIFTY_50" },
-      { label: "Bank Nifty", value: "BANK_NIFTY" },
+      { label: "Nifty 50 (2019 - 2025)", value: "NIFTY_50_2019_2025.csv" },
+      { label: "Nifty 50 (2025)", value: "NIFTY_50_2025.csv" },
+      { label: "Nifty 50 (2024)", value: "NIFTY_50_2024.csv" },
+      { label: "Nifty 50 (2023)", value: "NIFTY_50_2023.csv" },
+      { label: "Nifty 50 (2022)", value: "NIFTY_50_2022.csv" },
+      { label: "Nifty 50 (2021)", value: "NIFTY_50_2021.csv" },
+      { label: "Nifty 50 (2020)", value: "NIFTY_50_2020.csv" },
+      { label: "Nifty 50 (2019)", value: "NIFTY_50_2019.csv" },
+      { label: "Nifty 50 (2018)", value: "NIFTY_50_2018.csv" },
+      { label: "Nifty 50 (2017)", value: "NIFTY_50_2017.csv" },
+      { label: "Nifty 50 (2016)", value: "NIFTY_50_2016.csv" },
+      { label: "Nifty 50 (2015)", value: "NIFTY_50_2015.csv" },
     ],
   },
   {
     label: "Lot Size",
-    name: "lotSize",
+    name: "lot-size",
     type: "number",
     defaultValue: 75,
   },
@@ -49,7 +68,7 @@ const CONFIG_PARAMS = [
     label: "Tax and Brokerage",
     name: "deductions",
     type: "number",
-    defaultValue: 80,
+    defaultValue: 100,
   },
   {
     label: "Target",
@@ -65,49 +84,67 @@ const CONFIG_PARAMS = [
   },
   {
     label: "Trailing Stoploss",
-    name: "trailing_stoploss",
+    name: "trailing-stoploss",
     type: "number",
     defaultValue: 75,
   },
   {
     label: "Trailing Stoploss At",
-    name: "trail_stoploss_at",
+    name: "trail-stoploss-at",
     type: "number",
     defaultValue: 25,
   },
   {
+    label: "Virtual Target",
+    name: "virtual-target",
+    type: "number",
+    defaultValue: 100,
+  },
+  {
+    label: "Day Target",
+    name: "day-target",
+    type: "number",
+    defaultValue: 0,
+  },
+  {
     label: "Day Stoploss",
-    name: "day_stoploss",
+    name: "day-stoploss",
+    type: "number",
+    defaultValue: 0,
+  },
+  {
+    label: "Number of Trades Limit (Per Day)",
+    name: "day-trades-limit",
     type: "number",
     defaultValue: 0,
   },
   {
     label: "Start Time (Minutes)",
-    name: "start_time",
+    name: "start-time",
     type: "number",
     defaultValue: 30,
   },
   {
     label: "Trade Interval (Minutes)",
-    name: "trade_interval",
+    name: "trade-interval",
     type: "number",
     defaultValue: 30,
   },
   {
     label: "Simple Moving Average Period",
-    name: "sma_period",
+    name: "sma-period",
     type: "number",
     defaultValue: 100,
   },
   {
     label: "Exponentail Simple Moving Average Period",
-    name: "ema_period",
+    name: "ema-period",
     type: "number",
     defaultValue: 10,
   },
   {
     label: "Trade Decision",
-    name: "trade_decision",
+    name: "trade-decision",
     type: "dropdown",
     defaultValue: "ema",
     options: [
@@ -120,14 +157,50 @@ const CONFIG_PARAMS = [
     ],
   },
   {
-    label: "Mock first trade to get market direction",
-    name: "first_mock_trade",
+    label: "Mean Reversion",
+    name: "mean-reversion",
     type: "boolean",
     defaultValue: false,
   },
   {
+    label: "Mean Reversion Threshold",
+    name: "mean-reversion-threshold",
+    type: "number",
+    defaultValue: 100,
+  },
+  {
+    label: "Trend Follower",
+    name: "trend-follower",
+    type: "boolean",
+    defaultValue: false,
+  },
+  {
+    label: "Trends Tandle Count",
+    name: "trends-candle-count",
+    type: "number",
+    defaultValue: 10,
+  },
+  {
+    label: "Wait For Pullback",
+    name: "wait-for-pullback",
+    type: "boolean",
+    defaultValue: false,
+  },
+  {
+    label: "Mock first trade to get market direction",
+    name: "first-mock-trade",
+    type: "boolean",
+    defaultValue: false,
+  },
+  {
+    label: "Time Variance",
+    name: "time-variance",
+    type: "number",
+    defaultValue: 0,
+  },
+  {
     label: "Download all trade logs for debugging",
-    name: "debug_trades",
+    name: "debug-trades",
     type: "boolean",
     defaultValue: true,
   },
@@ -139,7 +212,7 @@ const CONFIG_PARAMS_DEFAULTS = CONFIG_PARAMS.reduce((obj, param) => {
 }, {})
 
 export default function BacktestConfigForm(props) {
-  const { onSubmit: emitSubmit } = props;
+  const { onSubmit: emitSubmit, onClear: emitClear } = props;
 
   const configParams = useRef(CONFIG_PARAMS_DEFAULTS);
 
@@ -178,7 +251,7 @@ export default function BacktestConfigForm(props) {
           type="number"
           label={label}
           defaultValue={defaultValue}
-          onChange={(event) => handleConfigParamChange({ [name]: event.target.value })}
+          onChange={(event) => handleConfigParamChange({ [name]: parseInt(event.target.value) || "" })}
         />;
 
       case "boolean":
@@ -193,18 +266,42 @@ export default function BacktestConfigForm(props) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, boxShadow: "1px solid" }}>
-      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+    <Drawer
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: drawerWidth,
+          boxSizing: 'border-box',
+        },
+      }}
+      variant="permanent"
+      anchor="right"
+    >
+      <Toolbar />
+      <Divider />
+      <List>
         {CONFIG_PARAMS.map((param, index) => (
-          <Grid key={index} size={{ xs: 3, sm: 3, md: 3 }}>
+          <ListItem key={index}>
             <FormControl fullWidth>
               {getComponent(param)}
             </FormControl>
-          </Grid>
+          </ListItem>
         ))}
-        <Button variant="contained" onClick={handleSubmitButtonClick}>Backtest</Button>
-        <Button variant="outlined">Reset to Default</Button>
-      </Grid>
-    </Box>
+      </List>
+      <Divider />
+      <List>
+        <ListItem>
+          <FormControl fullWidth>
+            <Button variant="contained" onClick={handleSubmitButtonClick}>Backtest</Button>
+          </FormControl>
+        </ListItem>
+        <ListItem>
+          <FormControl fullWidth>
+            <Button variant="outlined" onClick={() => emitClear()}>Clear Results</Button>
+          </FormControl>
+        </ListItem>
+      </List>
+    </Drawer>
   );
 }

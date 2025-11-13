@@ -50,6 +50,7 @@ function OtpView(props) {
           TextFieldsProps={{ type: "password" }}
           validateChar={(text) => !isNaN(Number(text))}
           onComplete={() => setEnableValidateButton(true)}
+          autoFocus={true}
         />
       </CardContent>
 

@@ -5,7 +5,7 @@ const margin = { right: 24 };
 
 const seriesOptions = {
   area: false,
-  showMark: true,
+  showMark: false,
   curve: "linear",
 }
 
@@ -41,7 +41,12 @@ function LineChart(props) {
     <MuiLineChart
       height={300}
       series={series}
-      xAxis={[{ scaleType: 'point', data: xData }]}
+      xAxis={[{
+        scaleType: 'point',
+        data: xData,
+        min: 0,
+        max: 365,
+      }]}
       margin={margin}
     />
   )
