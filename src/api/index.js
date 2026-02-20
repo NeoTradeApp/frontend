@@ -1,12 +1,5 @@
-export {
-  loginApi,
-  resendOtpApi,
-  validateOtpApi,
-  validateOtpSessionApi,
-  userProfileApi,
-  logoutApi,
-} from "./authApis";
+export * as kotakNeoApis from "./kotakneo";
 
-export {
-  backtest,
-} from "./backtestApis";
+export * from "./userApis";
+
+export * from "./backtestApis";

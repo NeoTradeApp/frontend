@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardHeader,
   CardContent,
   FormHelperText,
   FormControl,
+  Button,
 } from "@mui/material";
 import { Fingerprint } from "@mui/icons-material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -18,6 +20,8 @@ function Login(props) {
     onChange: emitChange,
     onSubmit: emitSubmit,
   } = props;
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({ mobileNumber, password });
   const [isLoading, setIsLoading] = useState(false);
@@ -101,6 +105,8 @@ function Login(props) {
           Login
         </LoadingButton>
       </CardContent>
+
+      <Button onClick={() => navigate(-1)}> Back </Button>
     </Card>
   );
 }

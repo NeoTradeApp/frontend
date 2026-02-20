@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { loginApi } from "@api";
+import { kotakNeoApis } from "@api";
 import LoginView from "./LoginView";
 
 function LoginController() {
@@ -9,10 +9,10 @@ function LoginController() {
     new Promise((resolve, reject) => {
       const { mobileNumber, password } = data;
 
-      loginApi(mobileNumber, password)
+      kotakNeoApis.loginApi(mobileNumber, password)
         .then((data) => {
           resolve(data.message);
-          navigate("/validate-otp");
+          navigate("/kotakneo/validate-otp");
         })
         .catch((error) => reject(error.message));
     });

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
+  kotakNeoApis,
   resendOtpApi,
   validateOtpApi,
   validateOtpSessionApi,
@@ -15,7 +16,7 @@ function OtpController() {
 
   const handleSubmit = (otp) =>
     new Promise((resolve, reject) => {
-      validateOtpApi(otp)
+      kotakNeoApis.validateOtpApi(otp)
         .then((data) => {
           resolve(data.message);
           navigate("/");
@@ -25,7 +26,7 @@ function OtpController() {
 
   const handleResend = () =>
     new Promise((resolve, reject) => {
-      resendOtpApi()
+      kotakNeoApis.resendOtpApi()
         .then((data) => {
           resolve(data.message);
         })
@@ -33,7 +34,7 @@ function OtpController() {
     });
 
   useEffect(() => {
-    validateOtpSessionApi().catch((error) => {
+    kotakNeoApis.validateOtpSessionApi().catch((error) => {
       dispatch(openSnackbar(error.message));
       navigate("/login");
     });
