@@ -3,4 +3,5 @@ import apiClient from "./apiClient";
 export const userProfileApi = () =>
   apiClient.get("/users/profile");
 
-export const logoutApi = () => apiClient.post("/auth/logout");
+const { REACT_APP_BACKEND_HOST_URL } = process.env;
+export const logoutApi = () => apiClient.post("/auth/logout", {}, { baseUrl: REACT_APP_BACKEND_HOST_URL });

@@ -1,7 +1,17 @@
 import DashboardView from "./DashboardView";
+import { kotakNeoApis } from "@api";
 
 function DashboardController() {
-  return <DashboardView />;
+  const getOptionsChain = () => {
+    kotakNeoApis.getOptionsChain("test", "test")
+  };
+
+  return (
+    <>
+      <DashboardView />;
+      <button onClick={getOptionsChain}> Get optoin chain </button>
+    </>
+  );
 }
 
 export default DashboardController;

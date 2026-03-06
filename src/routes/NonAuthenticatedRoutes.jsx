@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { NonAuthenticated, KotakNeoTheme } from "@layouts";
-import { LoginOptions, KotakNeoLogin, KotakNeoOtp } from "@pages";
+import { LoginOptions, KotakNeoLogin, KotakNeoMpin } from "@pages";
 
 function NonAuthenticatedRoutes() {
   return (
@@ -8,7 +8,7 @@ function NonAuthenticatedRoutes() {
       <Route element={<NonAuthenticated />}>
         <Route path="/kotakneo" element={<KotakNeoTheme />}>
           <Route path="login" element={<KotakNeoLogin />} />
-          <Route path="validate-otp" element={<KotakNeoOtp />} />
+          <Route path="validate-mpin" element={<KotakNeoMpin />} />
         </Route>
 
         <Route path="/login" element={<LoginOptions />} />
