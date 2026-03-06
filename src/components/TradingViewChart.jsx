@@ -36,7 +36,6 @@ const TradingViewChart = function(props) {
       newSeries.setData(data);
 
       window.addEventListener("resize", handleResize);
-      console.log("CHART", chart);
 
       return () => {
         window.removeEventListener("resize", handleResize);

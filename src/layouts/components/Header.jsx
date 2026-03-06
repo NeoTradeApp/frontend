@@ -9,6 +9,8 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutButton from "./LogoutButton";
 
+const { REACT_APP_NAME } = process.env;
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -42,7 +44,7 @@ function Header(props) {
       <Toolbar>
         {menuIcon}
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Trade App
+          {REACT_APP_NAME}
         </Typography>
         <LogoutButton />
       </Toolbar>

@@ -1,5 +1,6 @@
 import { Grid2 as Grid, Box } from "@mui/material";
 import Nifty50Card from "./components/Nifty50Card";
+import NiftyOptionChain from "./components/NiftyOptionChain";
 import BracketOrders from "./components/BracketOrders";
 import Actions from "./components/Actions";
 
@@ -16,6 +17,10 @@ function DashboardView() {
         </Grid>
         <Grid item size={6}>
           <BracketOrders />
+        </Grid>
+
+        <Grid item size={6}>
+          <NiftyOptionChain />
         </Grid>
       </Grid>
     </Box>

@@ -18,7 +18,7 @@ function SocketService() {
           const { type, data } = JSON.parse(event.data);
           notifySubscribers(type, data);
         } catch (error) {
-          console.error(event.data);
+          console.error(error);
         }
       };
 

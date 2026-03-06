@@ -6,7 +6,7 @@ import "./App.css";
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'dark',
     primary: {
       main: '#0052cc',
     },

@@ -1,12 +1,10 @@
 import apiClient from "../apiClient";
 
-export const loginApi = (mobileNumber, password) =>
-  apiClient.post("/kotakneo/auth/login", { mobileNumber, password });
+export const loginApi = (mobileNumber, ucc, totp) =>
+  apiClient.post("/kotakneo/auth/login", { mobileNumber, ucc, totp });
 
-export const resendOtpApi = () => apiClient.post("/kotakneo/auth/resend-otp");
+export const validateMpinApi = (mpin) =>
+  apiClient.post("/kotakneo/auth/validate-mpin", { mpin });
 
-export const validateOtpApi = (otp) =>
-  apiClient.post("/kotakneo/auth/validate-otp", { otp });
-
-export const validateOtpSessionApi = () =>
-  apiClient.post("/kotakneo/auth/validate-otp-session");
+export const validateMpinSessionApi = () =>
+  apiClient.post("/kotakneo/auth/validate-mpin-session");

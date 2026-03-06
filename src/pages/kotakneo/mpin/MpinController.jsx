@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { kotakNeoApis } from "@api";
 import { openSnackbar } from "@redux";
-import OtpView from "./OtpView";
+import MpinView from "./MpinView";
 
-function OtpController() {
+function MpinController() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (otp) =>
+  const handleSubmit = (mpin) =>
     new Promise((resolve, reject) => {
-      kotakNeoApis.validateOtpApi(otp)
+      kotakNeoApis.validateMpinApi(mpin)
         .then((data) => {
           resolve(data.message);
           navigate("/");
@@ -19,23 +19,14 @@ function OtpController() {
         .catch((error) => reject(error.message));
     });
 
-  const handleResend = () =>
-    new Promise((resolve, reject) => {
-      kotakNeoApis.resendOtpApi()
-        .then((data) => {
-          resolve(data.message);
-        })
-        .catch((error) => reject(error.message));
-    });
-
   useEffect(() => {
-    kotakNeoApis.validateOtpSessionApi().catch((error) => {
+    kotakNeoApis.validateMpinSessionApi().catch((error) => {
       dispatch(openSnackbar(error.message));
       navigate("/login");
     });
   }, []);
 
-  return <OtpView onResend={handleResend} onSubmit={handleSubmit} />;
+  return <MpinView onSubmit={handleSubmit} />;
 }
 
-export default OtpController;
+export default MpinController;

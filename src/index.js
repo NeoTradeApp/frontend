@@ -11,8 +11,11 @@ import reportWebVitals from "./reportWebVitals";
 import { setAuthInterceptors } from "./api/interceptors";
 import { subscribeMarketFeed } from "./services/marketFeedService";
 
+const { REACT_APP_NAME } = process.env;
+
 setAuthInterceptors();
 subscribeMarketFeed();
+document.title = REACT_APP_NAME;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

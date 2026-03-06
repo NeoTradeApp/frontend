@@ -12,23 +12,24 @@ import { Fingerprint } from "@mui/icons-material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { MuiTelInput } from "mui-tel-input";
 import Password from "./components/Password";
+import { FormControlInput } from "@components";
 
 function Login(props) {
   const {
     mobileNumber = "",
-    password = "",
+    ucc = "",
     onChange: emitChange,
     onSubmit: emitSubmit,
   } = props;
 
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({ mobileNumber, password });
+  const [formData, setFormData] = useState({ mobileNumber, ucc });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [helperText, setHelperText] = useState("");
 
-  const enableSubmit = formData.mobileNumber && formData.password;
+  const enableSubmit = formData.mobileNumber && formData.ucc && formData.totp;
 
   const handleChange = (data) => {
     const newData = { ...formData, ...data };
@@ -82,9 +83,25 @@ function Login(props) {
       </CardContent>
 
       <CardContent>
+        <FormControlInput
+          label="Unique Client Code"
+          id="ucc"
+          name="ucc"
+          placeholder="Enter client code"
+          type={"text"}
+          fullWidth
+          required={true}
+          value={formData.ucc}
+          onChange={(event) => handleChange({ ucc: event.target.value })}
+        />
+      </CardContent>
+
+      <CardContent>
         <Password
-          value={formData.password}
-          onChange={(value) => handleChange({ password: value })}
+          label={"TOTP"}
+          placeholder={"Enter time based one time password"}
+          value={formData.totp}
+          onChange={(value) => handleChange({ totp: value })}
         />
       </CardContent>
 

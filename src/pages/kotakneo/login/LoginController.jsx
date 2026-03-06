@@ -7,12 +7,12 @@ function LoginController() {
 
   const handleSubmit = (data) =>
     new Promise((resolve, reject) => {
-      const { mobileNumber, password } = data;
+      const { mobileNumber, ucc, totp } = data;
 
-      kotakNeoApis.loginApi(mobileNumber, password)
+      kotakNeoApis.loginApi(mobileNumber, ucc, totp)
         .then((data) => {
           resolve(data.message);
-          navigate("/kotakneo/validate-otp");
+          navigate("/kotakneo/validate-mpin");
         })
         .catch((error) => reject(error.message));
     });
