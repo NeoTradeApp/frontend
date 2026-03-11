@@ -5,6 +5,7 @@ export const SCRIPS = {
   },
   SCRIP_TYPE: {
     NIFTY_INDEX: "NIFTY_INDEX",
+    NIFTY_FUTURE: "NIFTY_FUTURE",
     NIFTY_OPTIONS: "NIFTY_OPTIONS",
   }
 };
