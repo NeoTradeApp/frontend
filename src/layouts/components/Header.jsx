@@ -9,7 +9,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutButton from "./LogoutButton";
 
-const { REACT_APP_NAME } = process.env;
+const { REACT_APP_NAME, REACT_APP_DESCRIPTION } = process.env;
 
 const drawerWidth = 240;
 
@@ -45,6 +45,9 @@ function Header(props) {
         {menuIcon}
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {REACT_APP_NAME}
+          <Typography size="small">
+            {REACT_APP_DESCRIPTION}
+          </Typography>
         </Typography>
         <LogoutButton />
       </Toolbar>

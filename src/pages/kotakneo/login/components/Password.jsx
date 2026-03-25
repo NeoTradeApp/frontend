@@ -4,7 +4,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { FormControlInput } from "@components";
 
 function Password(props) {
-  const { value, onChange: emitChange, label, placeholder } = props;
+  const { value, onChange: emitChange, label, placeholder, onKeyDown: emitKeyDown } = props;
   const [password, setPassword] = useState(value);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -42,6 +42,7 @@ function Password(props) {
       fullWidth
       required={true}
       value={password}
+      onKeyDown={emitKeyDown}
       onChange={handleChange}
     />
   );

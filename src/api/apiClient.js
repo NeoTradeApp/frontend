@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getErrorMessage } from "@utils"
 
 const { REACT_APP_BACKEND_HOST_URL, REACT_APP_BACKEND_API_VERSION } =
   process.env;
@@ -21,7 +22,7 @@ const apiClient = {
 
       return response.data;
     } catch (error) {
-      throw error.response.data;
+      throw new Error(getErrorMessage(error.response || error));
     }
   },
 
@@ -34,7 +35,7 @@ const apiClient = {
 
       return response.data;
     } catch (error) {
-      throw error.response.data;
+      throw new Error(getErrorMessage(error.response || error));
     }
   },
 };

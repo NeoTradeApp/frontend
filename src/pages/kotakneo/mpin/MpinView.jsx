@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card, CardHeader, CardContent, FormHelperText } from "@mui/material";
 import { Key as KeyIcon } from "@mui/icons-material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -12,6 +12,8 @@ function MpinView(props) {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [helperText, setHelperText] = useState("");
+
+  const buttonRef = useRef(null);
 
   const handleChange = (newValue) => {
     setMpin(newValue);
@@ -35,6 +37,11 @@ function MpinView(props) {
     }
   };
 
+  const handleOtpComplete = () => {
+    setEnableValidateButton(true);
+    buttonRef.current?.focus();
+  };
+
   return (
     <Card variant="blank" sx={{ m: 3, p: 2 }}>
       <CardHeader title="Verify MPIN" />
@@ -46,7 +53,7 @@ function MpinView(props) {
           length={6}
           TextFieldsProps={{ type: "password" }}
           validateChar={(text) => !isNaN(Number(text))}
-          onComplete={() => setEnableValidateButton(true)}
+          onComplete={handleOtpComplete}
           autoFocus={true}
         />
       </CardContent>
@@ -64,6 +71,7 @@ function MpinView(props) {
           disabled={!enableValidateButton}
           fullWidth
           onClick={handleSubmit}
+          ref={buttonRef}
         >
           Verify
         </LoadingButton>

@@ -8,3 +8,14 @@ export const formatVolume = (num) => {
 
   return num;
 };
+
+export const getErrorMessage = (errorObj, ...keys) => {
+  const keysToMatch = ["message"].concat(keys);
+
+  const regexToMatch = new RegExp(`"(${keysToMatch.join("|")})":\s*"([^"]*)"`, "g");
+  const stringifiedError = JSON.stringify(errorObj);
+
+  const matches = Array.from(stringifiedError.matchAll(regexToMatch));
+
+  return matches.map(([, , match]) => match).join(". ");
+};

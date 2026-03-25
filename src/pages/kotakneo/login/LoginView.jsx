@@ -56,6 +56,8 @@ function Login(props) {
     }
   };
 
+  const submitOnEnterKey = (e) => e.key === "Enter" && handleSubmit()
+
   const parseMobileNumber = (mobileString) =>
     mobileString.replace(/[^\d\+]/g, "");
 
@@ -73,6 +75,7 @@ function Login(props) {
             required={true}
             defaultCountry="IN"
             value={formData.mobileNumber}
+            onKeyDown={submitOnEnterKey}
             onChange={(value) =>
               handleChange({
                 mobileNumber: parseMobileNumber(value),
@@ -92,6 +95,7 @@ function Login(props) {
           fullWidth
           required={true}
           value={formData.ucc}
+          onKeyDown={submitOnEnterKey}
           onChange={(event) => handleChange({ ucc: event.target.value })}
         />
       </CardContent>
@@ -101,6 +105,7 @@ function Login(props) {
           label={"TOTP"}
           placeholder={"Enter time based one time password"}
           value={formData.totp}
+          onKeyDown={submitOnEnterKey}
           onChange={(value) => handleChange({ totp: value })}
         />
       </CardContent>

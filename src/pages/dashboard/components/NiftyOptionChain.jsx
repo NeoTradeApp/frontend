@@ -76,6 +76,7 @@ function OptionChain() {
           border: "solid 1px rgba(255,255,255,0.3)",
           borderRadius: "30px",
         }}>
+        <Typography size="small">Spot Price</Typography>
           {renderPrice(spot)}
         </Box>
       </TableCell>
