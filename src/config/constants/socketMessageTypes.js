@@ -6,5 +6,8 @@ export const WEB_SOCKET = {
       INITIATED: "BACKTEST/INITIATED",
       UPDATE: "BACKTEST/UPDATE",
     },
+    POSITION: {
+      UPDATE: (positionId) => `POSITION/UPDATE/${positionId}`,
+    },
   },
 };

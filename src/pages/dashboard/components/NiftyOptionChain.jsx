@@ -15,14 +15,21 @@ import { formatVolume } from "@utils";
 
 function OptionChain() {
   const nifty50 = useSelector((state) => state.marketFeed.nifty50);
+  const nifty50Fut = useSelector((state) => state.marketFeed.nifty50Fut);
   const niftyOptionChainState = useSelector((state) => state.marketFeed.niftyOptionChain);
   const niftyOptionChain = { ...niftyOptionChainState };
 
   if (nifty50.currentPrice) {
     niftyOptionChain[nifty50.currentPrice] = {
       isSpot: true,
+      label: "Spot Price",
       ...nifty50,
     };
+    niftyOptionChain[nifty50Fut.currentPrice] = {
+      isSpot: true,
+      label: "Futures Price",
+      ...nifty50Fut,
+    }
   }
 
   const colorByValue = (value) => {
@@ -42,7 +49,7 @@ function OptionChain() {
     return (
       <>
         {formatVolume(oi) || "--"}
-        <Box sx={{ width: '100%', transform: `scaleX(${flipHorizontal ? -1 : 1})`, marginTop: "0.5rem"}}>
+        <Box sx={{ width: '100%', transform: `scaleX(${flipHorizontal ? -1 : 1})`, marginTop: "0.5rem" }}>
           <LinearProgress variant="determinate" value={percentageOI} color={color} />
         </Box>
       </>
@@ -66,7 +73,7 @@ function OptionChain() {
     );
   };
 
-  const renderSpot = (strike) => {
+  const renderSpot = (strike, label) => {
     const spot = niftyOptionChain[strike];
     if (!spot) return;
 
@@ -76,7 +83,7 @@ function OptionChain() {
           border: "solid 1px rgba(255,255,255,0.3)",
           borderRadius: "30px",
         }}>
-        <Typography size="small">Spot Price</Typography>
+          <Typography size="small">{label}</Typography>
           {renderPrice(spot)}
         </Box>
       </TableCell>
@@ -108,7 +115,7 @@ function OptionChain() {
   };
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ marginTop: "1rem" }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -126,7 +133,11 @@ function OptionChain() {
         <TableBody>
           {Object.keys(niftyOptionChain).sort((a, b) => b - a).map((strike) => (
             <TableRow key={strike}>
-              {niftyOptionChain[strike]?.isSpot ? renderSpot(strike) : renderOption(strike)}
+              {
+                niftyOptionChain[strike]?.isSpot
+                ? renderSpot(strike, niftyOptionChain[strike]?.label)
+                : renderOption(strike)
+              }
             </TableRow>
           ))}
         </TableBody>

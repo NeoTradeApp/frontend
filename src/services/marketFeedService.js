@@ -22,7 +22,7 @@ export const subscribeMarketFeed = () => {
       // niftyFut.currentPrice && store.dispatch(setNifty50Fut(niftyFut));
       store.dispatch(setNifty50Fut(marketData[SCRIPS.SCRIP_TYPE.NIFTY_FUTURE] || {}));
 
-      store.dispatch(updateNiftyOptionChain(marketData[SCRIPS.SCRIP_TYPE.NIFTY_OPTIONS] || {}));
+      store.dispatch(updateNiftyOptionChain(marketData[SCRIPS.SCRIP_TYPE.NIFTY_OPTION_CHAIN] || {}));
 
     }
   );

@@ -19,3 +19,9 @@ export const getErrorMessage = (errorObj, ...keys) => {
 
   return matches.map(([, , match]) => match).join(". ");
 };
+
+export const capitalize = (text = "") =>
+  text[0]?.toUpperCase() + text.slice(1)?.toLowerCase();
+
+export const titleize = (text) =>
+  text.split(/[\W_]+/).map(capitalize).join(" ");
