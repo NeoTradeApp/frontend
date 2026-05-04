@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import moment from "moment";
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
@@ -13,8 +14,9 @@ import {
   Chip,
   Divider,
 } from '@mui/material';
+import { updatePosition } from "@redux";
+import { PnL } from "@components";
 import Order from "./Order";
-import PnL from "./components/PnL";
 
 import { WEB_SOCKET } from "@constants";
 import useWebSocket from "@hooks/useWebSocket";
@@ -61,7 +63,11 @@ function Position(props) {
   const { position: positionFromProps } = props;
   const positionId = positionFromProps?.id;
 
+  const dispatch = useDispatch();
+
   const [position, setPosition] = useState(positionFromProps);
+  const isPositionActive = position?.status === "ACTIVE";
+  const isPositionClosed = position?.status === "CLOSED";
 
   useEffect(() => {
     setPosition(positionFromProps);
@@ -74,11 +80,21 @@ function Position(props) {
     }
   }, [livePosition]);
 
-  const formatStatus = (status) =>
-    <Chip label={status} variant="outlined" color="success" size="small" />;
+  useEffect(() => {
+    dispatch(updatePosition(position))
+  }, [position]);
 
-  const formatTime = (datetime) =>
-    datetime ? moment(datetime).format("HH:mm:ss") : "--:--:--";
+  const formatStatus = (status) =>
+    <Chip
+      label={status}
+      variant="outlined"
+      color={isPositionActive ? "success" : "error"}
+      size="small"
+      sx={{ margin: "0.5rem" }}
+    />;
+
+  const formatDateTime = (datetime) =>
+    datetime ? moment(datetime).format("MMM DD, HH:mm:ss") : "--:--:--";
 
   return (
     <Accordion>
@@ -86,17 +102,17 @@ function Position(props) {
         <Box sx={{ flexGrow: 1, marginLeft: "2rem" }}>
           <Box sx={{ p: 2 }}>
             <Grid container spacing={12}>
-              <Grid item size={5.5}>
+              <Grid item size={5}>
                 <Typography variant="subtitle1" component="span"> {position.name} </Typography>
                 {formatStatus(position.status)}
               </Grid>
               <Grid item size={3.5}>
-                <Typography variant="subtitle1" component="span"> {"Entry at"} </Typography>
-                <Typography variant="subtitle1" component="span"> {formatTime(position.entry_time)} </Typography>
+                <Typography variant="subtitle2" component="div"> {"Entry at"} </Typography>
+                <Typography variant="subtitle1" component="div"> {formatDateTime(position.entryTime)} </Typography>
               </Grid>
-              <Grid item size={3}>
-                <Typography variant="subtitle1" component="span"> {"Exit at"} </Typography>
-                <Typography variant="subtitle1" component="span"> {formatTime(position.exit_time)} </Typography>
+              <Grid item size={3.5}>
+                <Typography variant="subtitle2" component="div"> {"Exit at"} </Typography>
+                <Typography variant="subtitle1" component="div"> {formatDateTime(position.exitTime)} </Typography>
               </Grid>
             </Grid>
           </Box>
@@ -106,19 +122,19 @@ function Position(props) {
           <Box sx={{ p: 2 }}>
             <Grid container spacing={12}>
               <Grid item size={3.1}>
+                <PnL label="Unrealised P&L" value={isPositionActive ? position.pnl : 0} />
+              </Grid>
+
+              <Grid item size={3}>
+                <PnL label="Realised P&L" value={isPositionClosed ? position.pnl : 0} />
+              </Grid>
+
+              <Grid item size={3}>
                 <PnL label="Target" value={position.target} />
               </Grid>
 
-              <Grid item size={3}>
-                <PnL label="Stoploss" value={position.stoploss} />
-              </Grid>
-
-              <Grid item size={3}>
-                <PnL label="Realised P&L" value={0} />
-              </Grid>
-
               <Grid item size={2.9}>
-                <PnL label="Unrealised P&L" value={position.pnl} />
+                <PnL label="Stoploss" value={position.stoploss} />
               </Grid>
             </Grid>
           </Box>

@@ -15,9 +15,11 @@ function PositionPanel(props) {
   return (
     <Box>
       {
-        positions.map((position, index) => (
-          <Position key={index} position={position} />
-        ))
+        positions
+          .sort((a, b) => new Date(b.entryTime) - new Date(a.entryTime))
+          .map((position, index) => (
+            <Position key={index} position={position} />
+          ))
       }
     </Box>
   );

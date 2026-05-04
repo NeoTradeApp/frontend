@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 
-function PnL (props) {
+function PnL(props) {
   const { label, value, variant = "subtitle1" } = props;
   const parsedValue = parseFloat(value) || 0;
 

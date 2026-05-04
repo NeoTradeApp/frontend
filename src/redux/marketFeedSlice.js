@@ -29,21 +29,6 @@ export const marketFeedSlice = createSlice({
         });
       });
     },
-    // updateNiftyOptionChain: (state, action) => {
-    //   action.payload.forEach((option) => {
-    //     const { strikePrice, optionType, currentPrice } = option;
-
-    //     state.niftyOptionChain[strikePrice] ||= {};
-    //     state.niftyOptionChain[strikePrice][optionType] ||= {};
-
-    //     if (currentPrice) {
-    //       state.niftyOptionChain[strikePrice][optionType] = {
-    //         ...state.niftyOptionChain[strikePrice][optionType],
-    //         ...option
-    //       };
-    //     }
-    //   });
-    // },
   },
 });
 

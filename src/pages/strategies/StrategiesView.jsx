@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, Grid2 as Grid } from "@mui/material";
 import { TabView } from "@components";
-import PositionPanel from "./PositionPanel";
 import { titleize } from "@utils";
+import PositionPanel from "./PositionPanel";
 
 function StrategiesView(props) {
   const { strategies } = props;
