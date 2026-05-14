@@ -4,3 +4,4 @@ export { default as LineChart } from "./LineChart";
 export { default as TradingViewChart } from "./TradingViewChart";
 export { default as TabView } from "./TabView";
 export { default as PnL } from "./PnL";
+export { default as Typography } from "./Typography";

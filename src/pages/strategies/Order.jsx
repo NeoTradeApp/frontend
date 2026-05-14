@@ -1,35 +1,34 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import moment from "moment";
 import {
-  Typography,
   Grid2 as Grid,
   Chip,
   Divider,
 } from '@mui/material';
-import { updateOrder } from "@redux";
-import { PnL } from "@components";
+import { PnL, Typography } from "@components";
 
 function Order(props) {
-  const { order: orderFromProps } = props;
-  const [order, setOrder] = useState(orderFromProps);
+  const { entryOrder: entryOrderFromProps, exitOrder: exitOrderFromProps } = props;
 
-  const dispatch = useDispatch();
+  const [entryOrder, setEntryOrder] = useState(entryOrderFromProps);
+  const [exitOrder, setExitOrder] = useState(exitOrderFromProps);
 
-  const currentCandle = order.currentData?.currentCandle;
-
-  useEffect(() => {
-    setOrder(orderFromProps);
-  }, [orderFromProps])
+  const currentCandle = entryOrder.currentData?.currentCandle;
 
   useEffect(() => {
-    dispatch(updateOrder(order));
-  }, [order]);
+    setEntryOrder(entryOrderFromProps);
+  }, [entryOrderFromProps]);
+
+  useEffect(() => {
+    setExitOrder(exitOrderFromProps);
+  }, [exitOrderFromProps])
+
+  const isOrderClosed = !!exitOrder?.price;
 
   const renderAmount = (label, value) => {
     const parsedValue = parseFloat(value) || 0;
     return (
-      <Typography variant="subtitle2" component="div" sx={{ padding: "0.1rem" }} > {label}: {parsedValue} </Typography>
+      <Typography variant="subtitle2" component="div" sx={{ padding: "0.1rem" }} disabled={isOrderClosed} > {label}: {parsedValue} </Typography>
     );
   }
 
@@ -37,13 +36,17 @@ function Order(props) {
     date ? moment(date).format("MMM DD, YYYY") : "--";
 
   const getTotalCharges = (order) =>
-    parseFloat(order.brokerage) + parseFloat(order.taxes);
+    order ? (parseFloat(order.brokerage) + parseFloat(order.taxes)) : 0;
 
-  const priceDiff = (order) => order.tnxType === "BUY"
-    ? parseFloat(currentCandle?.close) - parseFloat(order.price)
-    : -(parseFloat(currentCandle?.close) - parseFloat(order.price));
+  const priceDiff = (entryOrder, exitOrder) => {
+    const closePrice = exitOrder?.price ? exitOrder.price : currentCandle?.close;
 
-  const getPnL = (order) => priceDiff(order) * parseInt(order.quantity);
+    return entryOrder.tnxType === "BUY"
+      ? parseFloat(closePrice) - parseFloat(entryOrder.price)
+      : -(parseFloat(closePrice) - parseFloat(entryOrder.price));
+  }
+
+  const getPnL = (entryOrder, exitOrder) => priceDiff(entryOrder, exitOrder) * parseInt(entryOrder.quantity);
 
   const orderName = (order) => {
     const [strike, type] = order.name.split(" ");
@@ -59,30 +62,35 @@ function Order(props) {
     <>
       <Grid container spacing={12} sx={{ padding: "1rem" }}>
         <Grid item size={3.1}>
-          <Typography variant="subtitle2" component="div"> {orderName(order)}
+          <Typography variant="subtitle2" component="div" disabled={isOrderClosed}> {orderName(entryOrder)}
             <Chip
-              label={order.tnxType}
+              label={entryOrder.tnxType}
               variant="outlined"
-              color={order.tnxType === "BUY" ? "success" : "error"}
+              color={entryOrder.tnxType === "BUY" ? "success" : "error"}
               size="small"
               sx={{ margin: "0.5rem" }}
+              disabled={isOrderClosed}
             />
           </Typography>
-          <Typography variant="subtitle2" component="div"> Exp: {orderExpiry(order)} </Typography>
+          <Typography variant="subtitle2" component="div" disabled={isOrderClosed}> Exp: {orderExpiry(entryOrder)} </Typography>
         </Grid>
 
-        <Grid item size={3}>
-          {renderAmount("Price", order.price)}
-          {renderAmount("LTP", currentCandle?.close)}
+        <Grid item size={3.5}>
+          {renderAmount("Entry price", entryOrder.price)}
+          {
+            exitOrder?.price
+              ? renderAmount("Exit price", exitOrder?.price)
+              : renderAmount("LTP", currentCandle?.close)
+          }
         </Grid>
 
-        <Grid item size={3}>
-          {renderAmount("Qty", order.quantity)}
-          {renderAmount("Charges", getTotalCharges(order))}
+        <Grid item size={2.5}>
+          {renderAmount("Qty", entryOrder.quantity)}
+          {renderAmount("Charges", getTotalCharges(entryOrder) + getTotalCharges(exitOrder))}
         </Grid>
 
         <Grid item size={2.9}>
-          <PnL label="P&L" value={getPnL(order)} />
+          <PnL label="P&L" value={getPnL(entryOrder, exitOrder)} disabled={isOrderClosed} />
         </Grid>
       </Grid>
       <Divider />

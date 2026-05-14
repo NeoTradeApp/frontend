@@ -9,7 +9,6 @@ import {
   Speed as SpeedIcon,
   Dashboard as DashboardIcon,
   TrendingUp as TrendingUpIcon,
-  Description as DescriptionIcon,
 } from "@mui/icons-material";
 
 import MenuList from "./MenuList";
@@ -78,13 +77,8 @@ const MENU_LIST = [
     path: "/",
   },
   {
-    label: "Strategy",
+    label: "Analyse Strategy",
     icon: <TrendingUpIcon />,
-    path: "/",
-  },
-  {
-    label: "Orders",
-    icon: <DescriptionIcon />,
     path: "/",
   },
   {

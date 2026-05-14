@@ -15,11 +15,11 @@ export default function PortfolioMetrics(props) {
   const { metrics } = props;
 
   const pieChartData = [
-    { label: "Winning %", value: metrics.winRatePercent, color: "#66bb6a" },
-    { label: "Lossing %", value: metrics.lossRatePercent, color: "#f44336" },
+    { label: "Winning probability (%)", value: (metrics.winRatePercent || 0).toFixed(2), color: "#66bb6a" },
+    { label: "Lossing probability (%)", value: (metrics.lossRatePercent || 0).toFixed(2), color: "#f44336" },
   ];
 
-  const lineChartData = [];
+  const lineChartData = [0];
   let sum = 0;
   (metrics.pnls || []).forEach((pnl) => {
     sum += pnl;

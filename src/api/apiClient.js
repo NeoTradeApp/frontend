@@ -22,7 +22,9 @@ const apiClient = {
 
       return response.data;
     } catch (error) {
-      throw new Error(getErrorMessage(error.response || error));
+      if (error.status !== 401) {
+        throw new Error(getErrorMessage(error));
+      }
     }
   },
 
@@ -35,7 +37,9 @@ const apiClient = {
 
       return response.data;
     } catch (error) {
-      throw new Error(getErrorMessage(error.response || error));
+      if (error.status !== 401) {
+        throw new Error(getErrorMessage(error.response || error));
+      }
     }
   },
 };

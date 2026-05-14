@@ -52,8 +52,16 @@ function SocketService() {
   };
 
   const notifySubscribers = (type, data) => {
-    this.subscribers[type] ||= [];
-    this.subscribers[type].forEach((callback) => callback(data));
+    Object.entries(this.subscribers).forEach(([regex, callbacks]) => {
+      const [firstMatch] = Array.from(type.matchAll(new RegExp(regex, "g")));
+      if (!firstMatch) return;
+
+      const [patternIsMatching, ...keys] = firstMatch;
+      if (patternIsMatching) {
+        callbacks?.forEach((callback) => callback && callback(data, ...keys));
+      }
+    });
+    // this.subscribers[type]?.forEach((callback) => callback(data));
   };
 
   this.sendMessage = (type, data) => {

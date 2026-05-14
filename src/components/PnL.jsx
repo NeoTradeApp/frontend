@@ -1,7 +1,7 @@
-import { Typography } from '@mui/material';
+import Typography from "./Typography"
 
 function PnL(props) {
-  const { label, value, variant = "subtitle1" } = props;
+  const { label, value, variant = "subtitle1", disabled } = props;
   const parsedValue = parseFloat(value) || 0;
 
   const colorByValue = (value) => value >= 0 ? "success" : "error";
@@ -13,11 +13,11 @@ function PnL(props) {
 
   return (
     <>
-      <Typography variant="subtitle2" component="span"> {label} </Typography>
+      <Typography variant="subtitle2" component="span" disabled={disabled}> {label} </Typography>
       <Typography
         variant={variant}
         component="div"
-        sx={{ flexGrow: 1 }}
+        sx={{ flexGrow: 1, ...(disabled && { opacity: "0.7" }) }}
         color={colorByValue(parsedValue)}
       >
         {valueWithSign(parsedValue)}

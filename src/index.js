@@ -10,12 +10,14 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { setAuthInterceptors } from "./api/interceptors";
 import { subscribeMarketFeed } from "./services/marketFeedService";
+import { subscribePositionUpdate } from "./services/portfolioUpdateService";
 
-const { REACT_APP_NAME } = process.env;
+const { REACT_APP_SHORT_NAME } = process.env;
 
 setAuthInterceptors();
 subscribeMarketFeed();
-document.title = REACT_APP_NAME;
+subscribePositionUpdate();
+document.title = REACT_APP_SHORT_NAME;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

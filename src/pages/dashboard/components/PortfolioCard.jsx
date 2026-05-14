@@ -16,8 +16,8 @@ function PortfolioCard() {
 
   useEffect(() => {
     const pnls = Object.values(positions)
-      .map(p => Number(p.pnl))
-      .filter(p => p !== null && !isNaN(p));
+      .filter(p => p.pnl !== null && !isNaN(p.pnl) && p.status === "CLOSED")
+      .map(p => Number(p.pnl));
 
     const totalTrades = pnls.length;
 
@@ -81,14 +81,18 @@ function PortfolioCard() {
               </Grid>
 
               <Grid item size={6}>
+                <PnL label="Net Unrealised P&L" value={portfolio.realisedPnl + portfolio.unrealisedPnl - portfolio.charges} />
+              </Grid>
+
+              <Grid item size={6}>
+                <PnL label="Net Realised P&L" value={portfolio.realisedPnl - portfolio.charges} />
+              </Grid>
+
+              <Grid item size={3}>
                 <PnL label="Charges" value={-portfolio.charges} />
               </Grid>
 
-              <Grid item size={6}>
-                <PnL label="Net P&L" value={portfolio.realisedPnl - portfolio.charges} />
-              </Grid>
-
-              <Grid item size={6}>
+              <Grid item size={3}>
                 <PnL label="Expectancy" value={metrics.expectancy} />
               </Grid>
 

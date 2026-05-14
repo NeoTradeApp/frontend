@@ -3,10 +3,14 @@ import { socketService } from "@services";
 
 const useWebSocket = (type) => {
   const [socketData, setSocketData] = useState();
+  const [keys, setKeys] = useState();
 
   useEffect(() => {
-    const unsubscribe = socketService.subscribe(type, (newSocketData) => {
-      setSocketData(newSocketData);
+    const unsubscribe = socketService.subscribe(type, (...args) => {
+      const [data, ...matchingKeys] = args;
+
+      setSocketData(data);
+      setKeys(matchingKeys);
     });
 
     // Cleanup on unmount
@@ -19,7 +23,7 @@ const useWebSocket = (type) => {
     socketService.sendMessage(type, data);
   };
 
-  return [socketData, sendSocketData];
+  return [socketData, keys, sendSocketData];
 };
 
 export default useWebSocket;
