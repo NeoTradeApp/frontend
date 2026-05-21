@@ -1,20 +1,42 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import {
   Card,
   CardContent,
   Grid2 as Grid,
 } from "@mui/material";
-import { PnL, PortfolioMetrics } from "@components";
+import { Typography, PnL, PortfolioMetrics } from "@components";
 
-function PortfolioCard() {
-  const portfolio = useSelector((state) => state.portfolio);
-  const positions = portfolio.positions || {};
-
+function Metrics(props) {
+  const { positions: positionsFromProps = [] } = props;
   const [metrics, setMetrics] = useState({});
 
+  const calculatePnl = (positions) => {
+    let realisedPnl = 0;
+    Object.values(positions).forEach((position) => {
+      const { status, pnl } = position;
+
+      if (status === "CLOSED") {
+        realisedPnl += pnl;
+      }
+    });
+
+    return realisedPnl;
+  };
+
+  const calculateCharges = (positions) =>
+    positions.reduce((totalCharges, position) => {
+      totalCharges += (position?.orders || []).reduce((charges, order) => {
+        const { brokerage, taxes } = order;
+        charges += brokerage + taxes;
+
+        return charges;
+      }, 0);
+
+      return totalCharges;
+    }, 0);
+
   useEffect(() => {
-    const pnls = Object.values(positions)
+    const pnls = Object.values(positionsFromProps)
       .filter(p => p.pnl !== null && !isNaN(p.pnl) && p.status === "CLOSED")
       .map(p => Number(p.pnl));
 
@@ -47,6 +69,9 @@ function PortfolioCard() {
       winRate * avgWin - lossRate * avgLoss;
 
     setMetrics({
+      realisedPnl: calculatePnl(positionsFromProps),
+      charges: calculateCharges(positionsFromProps),
+
       pnls,
       totalTrades,
       winCount,
@@ -63,7 +88,7 @@ function PortfolioCard() {
 
       expectancy,
     });
-  }, [positions]);
+  }, [positionsFromProps]);
 
   return (
     <Card>
@@ -71,35 +96,39 @@ function PortfolioCard() {
         <Grid container spacing={2}>
           <Grid item size={6}>
             <Grid container spacing={2}>
-              <Grid item size={6}>
-                <PnL label="Unrealised P&L" value={portfolio.unrealisedPnl} />
+              <Grid item size={4}>
+                <PnL label="Realised P&L" value={metrics.realisedPnl} />
               </Grid>
 
-              <Grid item size={6}>
-                <PnL label="Realised P&L" value={portfolio.realisedPnl} />
+              <Grid item size={4}>
+                <PnL label="Charges" value={-metrics.charges} />
               </Grid>
 
-              <Grid item size={6}>
-                <PnL label="Net Unrealised P&L" value={portfolio.realisedPnl + portfolio.unrealisedPnl - portfolio.charges} />
+              <Grid item size={4}>
+                <PnL label="Net Realised P&L" value={metrics.realisedPnl - metrics.charges} />
               </Grid>
 
-              <Grid item size={6}>
-                <PnL label="Net Realised P&L" value={portfolio.realisedPnl - portfolio.charges} />
-              </Grid>
-
-              <Grid item size={3}>
-                <PnL label="Charges" value={-portfolio.charges} />
-              </Grid>
-
-              <Grid item size={3}>
+              <Grid item size={4}>
                 <PnL label="Expectancy" value={metrics.expectancy} />
               </Grid>
 
-              <Grid item size={3}>
+              <Grid item size={4}>
                 <PnL label="Avg Win" value={metrics.avgWin} />
               </Grid>
-              <Grid item size={3}>
+
+              <Grid item size={4}>
                 <PnL label="Avg Loss" value={-metrics.avgLoss} />
+              </Grid>
+
+              <Grid item size={4}>
+                <Typography variant="subtitle2" component="span"> Total Trades </Typography>
+                <Typography
+                  variant="subtitle1"
+                  component="div"
+                  sx={{ flexGrow: 1 }}
+                >
+                  {positionsFromProps.length}
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
@@ -113,4 +142,4 @@ function PortfolioCard() {
   );
 }
 
-export default PortfolioCard;
+export default Metrics;

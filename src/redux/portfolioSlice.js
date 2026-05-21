@@ -50,6 +50,11 @@ export const portfolioSlice = createSlice({
 
         return positionsObj;
       }, {});
+
+      const { realisedPnl, unrealisedPnl } = calculatePnl(state.positions);
+
+      state.realisedPnl = realisedPnl;
+      state.unrealisedPnl = unrealisedPnl;
     },
     updatePosition: (state, action) => {
       const payloads = Array.isArray(action.payload) ? action.payload : [action.payload]
@@ -74,6 +79,8 @@ export const portfolioSlice = createSlice({
 
         return ordersObj;
       }, {});
+
+      state.charges = calculateCharges(state.orders);
     },
     updateOrder: (state, action) => {
       const payloads = Array.isArray(action.payload) ? action.payload : [action.payload]

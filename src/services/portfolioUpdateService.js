@@ -13,8 +13,7 @@ import { alarmService } from "@services";
 import { debounceWithBurst } from "@utils";
 
 export const subscribePositionUpdate = () => {
-  getStrategies().then((response) => {
-    const { data: strategies } = response || {};
+  getStrategies({ includePositions: true }).then((strategies) => {
     if (!strategies) return;
 
     const allPositions = [];

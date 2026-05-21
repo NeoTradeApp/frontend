@@ -12,11 +12,14 @@ function StrategiesView(props) {
   }, [strategiesFromProps]);
 
   const isAnyActive = (positions) => positions?.some(_ => _.status === "ACTIVE")
+  const tabHeadingText = (strategy) =>
+    `${titleize(strategy.strategyName)} (${strategy.positions.length}) ${isAnyActive(strategy.positions) ? "*" : ""}`
 
   return (
     <TabView tabs={
       Object.values(strategies || {}).map((strategy, index) => ({
-        heading: `${titleize(strategy.strategyName)} (${strategy.positions.length}) ${isAnyActive(strategy.positions) ? "*" : ""}`,
+        // heading: `${titleize(strategy.strategyName)} (${strategy.positions.length}) ${isAnyActive(strategy.positions) ? "*" : ""}`,
+        heading: (tabHeadingText(strategy)),
         panel: <PositionPanel key={index} strategyId={strategy.id} positions={strategy.positions} />
       }))
     } />

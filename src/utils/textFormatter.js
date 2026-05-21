@@ -25,3 +25,6 @@ export const capitalize = (text = "") =>
 
 export const titleize = (text) =>
   text.split(/[\W_]+/).map(capitalize).join(" ");
+
+export const selectKeys = (obj, ...keys) =>
+  obj && keys.reduce((result, key) => ({ ...result, [key]: obj[key] }), {});

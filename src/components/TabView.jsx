@@ -39,7 +39,14 @@ export default function TabView(props) {
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          textColor="secondary"
+          indicatorColor="primary"
+        >
           {tabs.map((tab, index) => {
             return (
               <Tab key={index} label={tab.heading} {...a11yProps(index)} />

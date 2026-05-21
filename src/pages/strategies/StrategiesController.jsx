@@ -8,8 +8,7 @@ function StrategiesController() {
   const [strategies, setStrategies] = useState([]);
 
   const loadStrategies = () => {
-    getStrategies().then((response) => {
-      const { data: strategies } = response || {};
+    getStrategies({ includePositions: true }).then((strategies) => {
       if (!strategies) return;
 
       setStrategies(strategies);
