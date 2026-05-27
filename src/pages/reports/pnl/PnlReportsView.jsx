@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Grid2 as Grid, Box } from "@mui/material";
 import { getDayWisePnl } from "@api";
-import { TabView } from "@components";
+import { TabView, PnL } from "@components";
 import PnlHeatMap from "./components/PnlHeatMap";
 import Metrics from "./components/Metrics";
 import Position from "../../strategies/Position";
@@ -26,6 +26,16 @@ function PnlReportsView() {
   const handleDayBlockClick = (date) => {
     const day = dayWisePnl.find((_) => _.date === date);
     setSelectedDay(day);
+  };
+
+  const tabHeading = (day) => {
+    const positions = (day?.positions || []);
+    return (
+      <PnL
+        label={`${titleize(day?.strategyName)} (${positions.length})`}
+        value={positions.reduce((sum, { pnl }) => sum + pnl, 0)}
+      />
+    );
   };
 
   return (
@@ -53,7 +63,7 @@ function PnlReportsView() {
               {
                 selectedDay && (
                   <TabView tabs={[{
-                    heading: `${titleize(selectedDay.strategyName)} (${(selectedDay?.positions || []).length})`,
+                    heading: tabHeading(selectedDay),
                     panel: <>
                       {
                         (selectedDay.positions || [])

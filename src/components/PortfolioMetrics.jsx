@@ -42,6 +42,7 @@ export default function PortfolioMetrics(props) {
           ]}
           series={[
             { curve: "linear", showMark: false, data: lineChartData },
+            { curve: "linear", showMark: false, color: "red", data: Array(lineChartData.length).fill(0) }
           ]}
         />
       </Grid>
