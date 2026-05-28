@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Grid2 as Grid, Box } from "@mui/material";
+import moment from "moment";
+import { Grid2 as Grid, Box, Typography } from "@mui/material";
 import { getDayWisePnl } from "@api";
 import { TabView, PnL } from "@components";
 import PnlHeatMap from "./components/PnlHeatMap";
@@ -21,6 +22,7 @@ function PnlReportsView() {
   const handleFilter = async (filter) => {
     const pnls = await getDayWisePnl(filter.strategyId, selectKeys(filter, "fromDate", "toDate")) || [];
     setDayWisePnl(pnls);
+    setSelectedDay(null);
   };
 
   const handleDayBlockClick = (date) => {
@@ -30,11 +32,24 @@ function PnlReportsView() {
 
   const tabHeading = (day) => {
     const positions = (day?.positions || []);
+    const formattedDate = moment(day.date).format("ddd MMM DD, YYYY");
+
     return (
-      <PnL
-        label={`${titleize(day?.strategyName)} (${positions.length})`}
-        value={positions.reduce((sum, { pnl }) => sum + pnl, 0)}
-      />
+      <>
+        <PnL
+          label={
+            <>
+              <Typography variant="caption1">
+                {titleize(day?.strategyName)} ({positions.length})
+              </Typography>
+              <Typography variant="body1" color="warning">
+                {formattedDate}
+              </Typography>
+            </>
+          }
+          value={positions.reduce((sum, { pnl }) => sum + pnl, 0)}
+        />
+      </>
     );
   };
 
@@ -47,6 +62,7 @@ function PnlReportsView() {
         <Grid item size={6}>
           <PnlHeatMap
             data={dayWisePnl.map((data) => selectKeys(data, "date", "pnl"))}
+            selectedDate={selectedDay?.date}
             onBlockClick={handleDayBlockClick}
           />
         </Grid>

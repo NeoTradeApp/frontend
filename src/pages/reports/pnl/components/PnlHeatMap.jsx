@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography, Tooltip } from "@mui/material";
 import moment from "moment";
 
@@ -86,7 +86,7 @@ const buildMonthData = (month, pnlMap) => {
 };
 
 const PnlHeatMap = (props) => {
-  const { data = [], onBlockClick: emitBlockClick } = props;
+  const { data = [], onBlockClick: emitBlockClick, selectedDate } = props;
   const pnlMap = new Map();
 
   data.forEach((d) => {
@@ -99,6 +99,12 @@ const PnlHeatMap = (props) => {
   const months = Array.from({ length: 12 }, (_, i) =>
     moment().month(i)
   );
+
+  const handleDayBlockClick = (day) => {
+    if (!day.pnl) return;
+
+    emitBlockClick && emitBlockClick(day.date);
+  }
 
   return (
     <Box
@@ -168,11 +174,9 @@ const PnlHeatMap = (props) => {
                         theme
                       ),
 
-                      border:
-                        day.pnl !== 0 &&
-                          !day.isWeekend
-                          ? "1px solid rgba(0,0,0,0.08)"
-                          : "1px solid transparent",
+                      border: day.date === selectedDate
+                        ? "2px solid #FFFFFFFF"
+                        : "1px solid transparent",
 
                       cursor: "pointer",
                       transition: "transform 0.15s ease",
@@ -180,7 +184,7 @@ const PnlHeatMap = (props) => {
                         transform: "scale(1.25)",
                       },
                     })}
-                    onClick={() => day.pnl && emitBlockClick && emitBlockClick(day.date)}
+                    onClick={() => handleDayBlockClick(day)}
                   />
                 </Tooltip>
               ))}
