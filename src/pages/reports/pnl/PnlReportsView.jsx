@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
-import { Grid2 as Grid, Box, Typography } from "@mui/material";
+import { Grid2 as Grid, Box, Typography, Stack, Chip } from "@mui/material";
 import { getDayWisePnl } from "@api";
 import { TabView, PnL } from "@components";
 import PnlHeatMap from "./components/PnlHeatMap";
@@ -35,21 +35,22 @@ function PnlReportsView() {
     const formattedDate = moment(day.date).format("ddd MMM DD, YYYY");
 
     return (
-      <>
-        <PnL
-          label={
-            <>
-              <Typography variant="caption1">
-                {titleize(day?.strategyName)} ({positions.length})
+      <PnL
+        label={
+          <>
+            <Stack direction="row" spacing={0.55} alignItems="left">
+              <Typography variant="span">
+                {titleize(day?.strategyName)}
               </Typography>
-              <Typography variant="body1" color="warning">
-                {formattedDate}
-              </Typography>
-            </>
-          }
-          value={positions.reduce((sum, { pnl }) => sum + pnl, 0)}
-        />
-      </>
+              <Chip label={positions.length} variant={"outlined"} color="info" size="small" />
+            </Stack>
+            <Typography variant="span" color="warning">
+              {formattedDate}
+            </Typography>
+          </>
+        }
+        value={positions.reduce((sum, { pnl }) => sum + pnl, 0)}
+      />
     );
   };
 

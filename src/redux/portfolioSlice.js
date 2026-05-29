@@ -25,6 +25,20 @@ const calculateCharges = (orders) =>
     return charges;
   }, 0);
 
+const calculateStrategyWisePnl = (positions) =>
+  Object.values(positions).reduce((pnlObj, position) => {
+    pnlObj[position.strategyId] ||= { unrealisedPnl: 0, realisedPnl: 0 };
+
+    const { status, pnl } = position;
+    if (status === "ACTIVE") {
+      pnlObj[position.strategyId].unrealisedPnl += pnl;
+    } else {
+      pnlObj[position.strategyId].realisedPnl += pnl;
+    }
+
+    return pnlObj;
+  }, {});
+
 export const portfolioSlice = createSlice({
   name: "portfolio",
   initialState: {
@@ -33,6 +47,7 @@ export const portfolioSlice = createSlice({
     charges: 0,
     positions: {},
     orders: {},
+    strategyWisePnl: {},
   },
   reducers: {
     setRealisedPnl: (state, action) => {
@@ -68,6 +83,8 @@ export const portfolioSlice = createSlice({
 
       state.realisedPnl = realisedPnl;
       state.unrealisedPnl = unrealisedPnl;
+
+      state.strategyWisePnl = calculateStrategyWisePnl(state.positions);
 
       const pnl = realisedPnl + unrealisedPnl - state.charges;
       const sign = parseInt(pnl) > 0 ? "▲" : "▼";
