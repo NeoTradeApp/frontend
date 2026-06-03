@@ -27,14 +27,16 @@ const calculateCharges = (orders) =>
 
 const calculateStrategyWisePnl = (positions) =>
   Object.values(positions).reduce((pnlObj, position) => {
-    pnlObj[position.strategyId] ||= { unrealisedPnl: 0, realisedPnl: 0 };
+    pnlObj[position.strategyId] ||= { unrealisedPnl: 0, realisedPnl: 0, anyActivePosition: false };
 
     const { status, pnl } = position;
     if (status === "ACTIVE") {
       pnlObj[position.strategyId].unrealisedPnl += pnl;
+      pnlObj[position.strategyId].anyActivePosition = true;
     } else {
       pnlObj[position.strategyId].realisedPnl += pnl;
     }
+
 
     return pnlObj;
   }, {});

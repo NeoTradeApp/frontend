@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, Tooltip } from "@mui/material";
+import { Box, Typography, Tooltip, Zoom } from "@mui/material";
 import moment from "moment";
 
 const CELL_SIZE = 18;
@@ -160,6 +160,12 @@ const PnlHeatMap = (props) => {
                       </Typography>
                     </Box>
                   }
+                  placement="top"
+                  arrow
+                  disableInteractive
+                  slotProps={{
+                    transition: Zoom,
+                  }}
                 >
                   <Box
                     sx={(theme) => ({
@@ -174,12 +180,12 @@ const PnlHeatMap = (props) => {
                         theme
                       ),
 
-                      border: day.date === selectedDate
+                      border: day.date === selectedDate && day.isCurrentMonth
                         ? "2px solid #FFFFFFFF"
                         : "1px solid transparent",
 
                       cursor: "pointer",
-                      transition: "transform 0.15s ease",
+                      transition: "transform 0.05s ease",
                       "&:hover": {
                         transform: "scale(1.25)",
                       },

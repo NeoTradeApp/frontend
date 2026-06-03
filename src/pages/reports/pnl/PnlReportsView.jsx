@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 import { Grid2 as Grid, Box, Typography, Stack, Chip } from "@mui/material";
 import { getDayWisePnl } from "@api";
-import { TabView, PnL } from "@components";
+import { TabView, PnL, Position } from "@components";
 import PnlHeatMap from "./components/PnlHeatMap";
 import Metrics from "./components/Metrics";
-import Position from "../../strategies/Position";
 import ReportFilters from "./components/ReportFilters";
 import { selectKeys, titleize } from "@utils"
 

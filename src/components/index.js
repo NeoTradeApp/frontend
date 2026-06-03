@@ -6,3 +6,4 @@ export { default as TabView } from "./TabView";
 export { default as PnL } from "./PnL";
 export { default as Typography } from "./Typography";
 export { default as PortfolioMetrics } from "./PortfolioMetrics";
+export * from "./strategies";

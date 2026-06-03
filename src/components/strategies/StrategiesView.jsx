@@ -8,7 +8,6 @@ import PositionPanel from "./PositionPanel";
 function TabHeading(props) {
   const { strategy } = props;
   const positions = strategy?.positions || [];
-  const isAnyActivePosition = positions?.some(_ => _.status === "ACTIVE");
 
   const strategyWisePnl = useSelector((state) => state.portfolio.strategyWisePnl[strategy.id]);
   const pnl = (strategyWisePnl?.unrealisedPnl || 0) + (strategyWisePnl?.realisedPnl || 0);
@@ -20,7 +19,12 @@ function TabHeading(props) {
           <Typography variant="span">
             {titleize(strategy.strategyName)}
           </Typography>
-          <Chip label={positions.length} variant={isAnyActivePosition ? "filled" : "outlined"} color="info" size="small" />
+          <Chip
+            label={positions.length}
+            variant={strategyWisePnl?.anyActivePosition ? "filled" : "outlined"}
+            color="info"
+            size="small"
+          />
         </Stack>
       }
       value={pnl}
