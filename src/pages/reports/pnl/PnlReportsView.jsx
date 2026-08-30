@@ -33,23 +33,38 @@ function PnlReportsView() {
     const positions = (day?.positions || []);
     const formattedDate = moment(day.date).format("ddd MMM DD, YYYY");
 
+    const totalCharges = positions.reduce((charges, pos) => {
+      if (!pos?.orders) return charges;
+
+      return charges + pos.orders.reduce((s, order) =>
+        s + (order?.brokerage || 0) + (order?.taxes || 0), 0)
+    }, 0);
+
     return (
-      <PnL
-        label={
-          <>
-            <Stack direction="row" spacing={0.55} alignItems="left">
-              <Typography variant="span">
-                {titleize(day?.strategyName)}
-              </Typography>
-              <Chip label={positions.length} variant={"outlined"} color="info" size="small" />
-            </Stack>
-            <Typography variant="span" color="warning">
-              {formattedDate}
-            </Typography>
-          </>
-        }
-        value={positions.reduce((sum, { pnl }) => sum + pnl, 0)}
-      />
+      <>
+        <Stack direction="row" spacing={0.55} alignItems="left">
+          <Typography variant="span">
+            {titleize(day?.strategyName)}
+          </Typography>
+          <Chip label={positions.length} variant={"outlined"} color="info" size="small" />
+        </Stack>
+        <Typography variant="span" color="warning">
+          {formattedDate}
+        </Typography>
+        <Stack direction="row" spacing={2} alignItems="center">
+
+          <PnL
+            label={"PnL"}
+            value={positions.reduce((sum, { pnl }) => sum + pnl, 0)}
+          />
+        </Stack>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <PnL
+            label={"Charges"}
+            value={-totalCharges}
+          />
+        </Stack>
+      </>
     );
   };
 

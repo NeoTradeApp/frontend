@@ -34,7 +34,7 @@ const getCellStyle = (pnl, isWeekend, isCurrentMonth, theme) => {
     return {
       backgroundColor:
         theme.palette.action.disabledBackground,
-      opacity: 0.5,
+      opacity: 0.4,
     };
   }
 
@@ -180,14 +180,26 @@ const PnlHeatMap = (props) => {
                         theme
                       ),
 
-                      border: day.date === selectedDate && day.isCurrentMonth
-                        ? "2px solid #FFFFFFFF"
-                        : "1px solid transparent",
+                      // border: day.date === selectedDate && day.isCurrentMonth
+                      //   // ? "2px solid #FFFFFFFF"
+                      //   ? "2PX solid #FFA726A0"
+                      //   : "1px solid transparent",
+
+                      ...(day.date === selectedDate && day.isCurrentMonth
+                        ? ({
+                          border: "2PX solid #FFFFFFFF",
+                          transform: "scale(1.25)"
+                        })
+                        : ({
+                          border: "1px solid transparent",
+                          // transform: "scale(1)"
+                        })
+                      ),
 
                       cursor: "pointer",
-                      transition: "transform 0.05s ease",
+                      transition: "transform 0.1s ease",
                       "&:hover": {
-                        transform: "scale(1.25)",
+                        transform: "scale(1.35)",
                       },
                     })}
                     onClick={() => handleDayBlockClick(day)}
