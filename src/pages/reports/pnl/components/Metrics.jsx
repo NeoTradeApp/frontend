@@ -35,6 +35,20 @@ function Metrics(props) {
       return totalCharges;
     }, 0);
 
+  const calculateBrokerageAndTaxes = (positions) => {
+    const accumulateCharges = (charges, entity) => {
+      const { brokerage, taxes } = entity;
+      charges.brokerage += brokerage;
+      charges.taxes += taxes;
+
+      return charges;
+    };
+
+    return positions
+      .map(position => (position?.orders || []).reduce(accumulateCharges, { brokerage: 0, taxes: 0 }))
+      .reduce(accumulateCharges, { brokerage: 0, taxes: 0 });
+  };
+
   useEffect(() => {
     const pnls = Object.values(positionsFromProps)
       .filter(p => p.pnl !== null && !isNaN(p.pnl) && p.status === "CLOSED")
@@ -68,9 +82,13 @@ function Metrics(props) {
     const expectancy =
       winRate * avgWin - lossRate * avgLoss;
 
+    const { brokerage, taxes } = calculateBrokerageAndTaxes(positionsFromProps);
+
     setMetrics({
       realisedPnl: calculatePnl(positionsFromProps),
-      charges: calculateCharges(positionsFromProps),
+      charges: brokerage + taxes,
+      brokerage,
+      taxes,
 
       pnls,
       totalTrades,
@@ -102,6 +120,8 @@ function Metrics(props) {
 
               <Grid item size={4}>
                 <PnL label="Charges" value={-metrics.charges} />
+                <PnL label="Brokerage" value={-metrics.brokerage} variant={"caption"} />
+                <PnL label="Taxes" value={-metrics.taxes} variant={"caption"} />
               </Grid>
 
               <Grid item size={4}>

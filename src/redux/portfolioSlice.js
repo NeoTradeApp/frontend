@@ -72,6 +72,8 @@ export const portfolioSlice = createSlice({
 
       state.realisedPnl = realisedPnl;
       state.unrealisedPnl = unrealisedPnl;
+
+      state.strategyWisePnl = calculateStrategyWisePnl(state.positions);
     },
     updatePosition: (state, action) => {
       const payloads = Array.isArray(action.payload) ? action.payload : [action.payload]

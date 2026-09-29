@@ -52,7 +52,6 @@ function PnlReportsView() {
           {formattedDate}
         </Typography>
         <Stack direction="row" spacing={2} alignItems="center">
-
           <PnL
             label={"PnL"}
             value={positions.reduce((sum, { pnl }) => sum + pnl, 0)}
@@ -62,6 +61,7 @@ function PnlReportsView() {
           <PnL
             label={"Charges"}
             value={-totalCharges}
+            variant={"caption"}
           />
         </Stack>
       </>

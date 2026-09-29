@@ -101,7 +101,7 @@ const PnlHeatMap = (props) => {
   );
 
   const handleDayBlockClick = (day) => {
-    if (!day.pnl) return;
+    // if (!day.pnl) return;
 
     emitBlockClick && emitBlockClick(day.date);
   }

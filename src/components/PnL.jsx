@@ -13,7 +13,7 @@ function PnL(props) {
 
   return (
     <>
-      <Typography variant="subtitle2" component="span" disabled={disabled}> {label} </Typography>
+      <Typography variant={variant} component="span" disabled={disabled}> {label} </Typography>
       <Typography
         variant={variant}
         component="div"

@@ -88,7 +88,7 @@ function Position(props) {
 
   const pairedOrders = Object.values(position.orders)
     .reduce((obj, order) => {
-      const key = order.parentId || order.id;
+      const key = order.parentId || order.id || Math.random().toString();
       const orderType = order.parentId ? "exitOrder" : "entryOrder";
 
       obj[key] ||= {};
