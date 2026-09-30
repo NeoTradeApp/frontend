@@ -1,3 +1,4 @@
+import { formattedAmount } from "@utils"
 import Typography from "./Typography"
 
 function PnL(props) {
@@ -8,7 +9,7 @@ function PnL(props) {
 
   const valueWithSign = (value) => {
     const sign = value >= 0 ? "+" : "";
-    return value ? `${sign}${value.toFixed(2)}` : "00.00";
+    return value ? `${sign}${formattedAmount(value)}` : "00.00";
   };
 
   return (

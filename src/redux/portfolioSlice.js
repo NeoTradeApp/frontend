@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { formattedAmount } from "@utils";
 
 const { REACT_APP_SHORT_NAME } = process.env;
 
@@ -92,7 +93,7 @@ export const portfolioSlice = createSlice({
 
       const pnl = realisedPnl + unrealisedPnl - state.charges;
       const sign = parseInt(pnl) > 0 ? "▲" : "▼";
-      document.title = [REACT_APP_SHORT_NAME, ` ₹ ${pnl.toFixed(2)} ${sign}` || "0"].join("   |   ")
+      document.title = [REACT_APP_SHORT_NAME, ` ₹ ${formattedAmount(pnl)} ${sign}` || "0"].join("   |   ")
     },
     updateAllOrders: (state, action) => {
       state.orders = action.payload.reduce((ordersObj, order) => {

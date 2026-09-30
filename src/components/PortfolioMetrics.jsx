@@ -3,6 +3,7 @@ import {
 } from "@mui/material";
 import { PieChart } from '@mui/x-charts/PieChart';
 import { LineChart } from '@mui/x-charts/LineChart';
+import { formattedAmount } from "@utils";
 
 const settings = {
   margin: { right: 5 },
@@ -15,8 +16,8 @@ export default function PortfolioMetrics(props) {
   const { metrics } = props;
 
   const pieChartData = [
-    { label: "Winning probability (%)", value: (metrics.winRatePercent || 0).toFixed(2), color: "#66bb6a" },
-    { label: "Lossing probability (%)", value: (metrics.lossRatePercent || 0).toFixed(2), color: "#f44336" },
+    { label: "Winning probability (%)", value: formattedAmount(metrics.winRatePercent), color: "#66bb6a" },
+    { label: "Lossing probability (%)", value: formattedAmount(metrics.lossRatePercent), color: "#f44336" },
   ];
 
   const lineChartData = [0];

@@ -44,7 +44,7 @@ function OptionChain() {
   };
 
   const renderOI = (oi, color, flipHorizontal = false) => {
-    const percentageOI = ((oi || 0) * 100) / 10000000;
+    const percentageOI = ((oi || 0) * 100) / 30000000;
 
     return (
       <>

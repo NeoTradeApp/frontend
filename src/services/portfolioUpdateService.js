@@ -10,7 +10,7 @@ import { socketService } from "./socketService";
 import { WEB_SOCKET } from "@constants";
 import { getStrategies } from "@api";
 import { alarmService } from "@services";
-import { debounceWithBurst } from "@utils";
+import { debounceWithBurst, formattedAmount } from "@utils";
 
 export const subscribePositionUpdate = () => {
   getStrategies({ includePositions: true }).then((strategies) => {
@@ -45,10 +45,10 @@ export const subscribePositionUpdate = () => {
 
       if (position.status === "CLOSED") {
         if (position.pnl > 0) {
-          store.dispatch(openSnackbar(`Trade exit with profit: ₹ ${position.pnl?.toFixed(2)}`));
+          store.dispatch(openSnackbar(`Trade exit with profit: ₹ ${formattedAmount(position.pnl)}`));
           alarmService.playProfitSound()
         } else {
-          store.dispatch(openSnackbar(`Trade exit with loss: ₹ ${position.pnl?.toFixed(2)}`));
+          store.dispatch(openSnackbar(`Trade exit with loss: ₹ ${formattedAmount(position.pnl)}`));
           alarmService.playLossSound();
         }
       }

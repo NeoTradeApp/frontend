@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Typography, Tooltip, Zoom } from "@mui/material";
 import moment from "moment";
+import { formattedAmount } from "@utils";
 
 const CELL_SIZE = 18;
 
@@ -156,7 +157,7 @@ const PnlHeatMap = (props) => {
                         display="block"
                         color={day.pnl >= 0 ? "success" : "error"}
                       >
-                        P&L: ₹{day.pnl.toFixed(2)}
+                        P&L: ₹{formattedAmount(day.pnl)}
                       </Typography>
                     </Box>
                   }

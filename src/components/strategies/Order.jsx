@@ -6,6 +6,7 @@ import {
   Divider,
 } from '@mui/material';
 import { PnL, Typography } from "@components";
+import { formattedAmount } from "@utils";
 
 function Order(props) {
   const { entryOrder: entryOrderFromProps, exitOrder: exitOrderFromProps } = props;
@@ -86,7 +87,7 @@ function Order(props) {
 
         <Grid item size={2.5}>
           {renderAmount("Qty", entryOrder.quantity)}
-          {renderAmount("Charges", getTotalCharges(entryOrder) + getTotalCharges(exitOrder))}
+          {renderAmount("Charges", formattedAmount(getTotalCharges(entryOrder) + getTotalCharges(exitOrder)))}
         </Grid>
 
         <Grid item size={2.9}>
