@@ -1,12 +1,12 @@
 import { useState } from "react";
 import moment from "moment";
-import { LineChart } from '@mui/x-charts/LineChart';
-import { FormControlLabel, Checkbox, Box } from '@mui/material';
+import { LineChart } from "@mui/x-charts/LineChart";
+import { FormControlLabel, Checkbox, Box } from "@mui/material";
 
 
 export default function PnlGraph(props) {
   const { metrics } = props;
-  const [includeCharges, setIncludeCharges] = useState(false);
+  const [includeCharges, setIncludeCharges] = useState(true);
 
   const toNumber = (n) => Number(n) || 0;
 
@@ -46,27 +46,29 @@ export default function PnlGraph(props) {
         xAxis={[
           {
             data: dataset.map((_, index) => index),
-            scaleType: 'point',
+            scaleType: "point",
             valueFormatter: (index) => {
               const item = dataset[index];
-              return item ? moment(item.date).format('MMM D, YYYY HH:mm') : '';
+              const formattedDate = moment(item.date).format("MMM D, YYYY HH:mm");
+              const orderNumber = `Order No.: #${index + 1}`;
+              return item ?  [formattedDate, orderNumber].join(" | ") : "";
             },
             tickLabelStyle: { display: "none" },
           },
         ]}
         series={[
           {
-            dataKey: 'pnl',
-            label: 'P&L',
-            curve: 'linear',
+            dataKey: "pnl",
+            label: "P&L",
+            curve: "linear",
             showMark: false,
           },
           {
-            dataKey: 'zeroRef',
-            label: 'Baseline',
-            curve: 'linear',
+            dataKey: "zeroRef",
+            label: "Baseline",
+            curve: "linear",
             showMark: false,
-            color: 'red',
+            color: "red",
           },
         ]}
         height={300}
