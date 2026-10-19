@@ -9,7 +9,7 @@ import {
   LinearProgress,
   Grid2 as Grid,
 } from "@mui/material";
-import { formatVolume } from "@utils";
+import { formatVolume, formattedAmount } from "@utils";
 
 function Nifty50FutCard() {
   const nifty50Fut = useSelector((state) => state.marketFeed.nifty50Fut);
@@ -18,7 +18,7 @@ function Nifty50FutCard() {
 
   const valueWithSign = (value) => {
     const sign = isPositive ? "+" : "";
-    return value ? `${sign}${value}` : "00.00";
+    return value ? `${sign}${formattedAmount(value)}` : "00.00";
   };
 
   const formattedExpiryDate = () =>
@@ -53,7 +53,7 @@ function Nifty50FutCard() {
               sx={{ flexGrow: 1 }}
               color={color}
             >
-              {nifty50Fut.currentPrice || "0000.00"}
+              {formattedAmount(nifty50Fut.currentPrice)}
             </Typography>
             <Typography
               variant="h6"

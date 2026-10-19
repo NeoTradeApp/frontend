@@ -25,7 +25,7 @@ const ReportFilters = (props) => {
   const [strategyOptions, setStrategyOptions] = useState([]);
   const [filter, setFilter] = useState({
     strategy: "",
-    fromDate: moment().startOf("month"),
+    fromDate: moment().startOf("year"),
     toDate: moment(),
   });
 

@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Card, CardContent, Typography } from "@mui/material";
+import { formattedAmount } from "@utils"
 
 function Nifty50Card() {
   const nifty50 = useSelector((state) => state.marketFeed.nifty50);
@@ -8,7 +9,7 @@ function Nifty50Card() {
 
   const valueWithSign = (value) => {
     const sign = isPositive ? "+" : "";
-    return value ? `${sign}${value}` : "00.00";
+    return value ? `${sign}${formattedAmount(value)}` : "00.00";
   };
 
   return (
@@ -23,7 +24,7 @@ function Nifty50Card() {
           sx={{ flexGrow: 1 }}
           color={color}
         >
-          {nifty50.currentPrice || "0000.00"}
+          {formattedAmount(nifty50.currentPrice)}
         </Typography>
         <Typography
           variant="h6"
@@ -31,7 +32,7 @@ function Nifty50Card() {
           sx={{ flexGrow: 1 }}
           color={color}
         >
-          {valueWithSign(nifty50.change)} ({valueWithSign(nifty50.changePercentage)} %)
+          {valueWithSign(formattedAmount(nifty50.change))} ({valueWithSign(nifty50.changePercentage)} %)
         </Typography>
       </CardContent>
     </Card>

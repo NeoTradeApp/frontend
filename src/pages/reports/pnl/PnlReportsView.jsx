@@ -12,10 +12,10 @@ function PnlReportsView() {
   const [selectedDay, setSelectedDay] = useState(null);
   const [dayWisePnl, setDayWisePnl] = useState([]);
 
-  const allPositions = dayWisePnl.reduce((allPositions, day) => {
-    allPositions = [...allPositions, ...(day.positions || [])];
+  const allPositions = dayWisePnl.reduce((acc, day) => {
+    acc = [...acc, ...(day.positions || [])];
 
-    return allPositions;
+    return acc;
   }, []);
 
   const handleFilter = async (filter) => {

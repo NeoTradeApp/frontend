@@ -11,7 +11,7 @@ import {
   Paper,
   LinearProgress,
 } from "@mui/material";
-import { formatVolume } from "@utils";
+import { formatVolume, formattedAmount } from "@utils";
 
 function OptionChain() {
   const nifty50 = useSelector((state) => state.marketFeed.nifty50);
@@ -40,7 +40,7 @@ function OptionChain() {
   const valueWithSign = (value) => {
     const isPositive = parseInt(value || 0) >= 0;
     const sign = isPositive ? "+" : "";
-    return value ? `${sign}${value}` : "00.00";
+    return value ? `${sign}${formattedAmount(value)}` : "00.00";
   };
 
   const renderOI = (oi, color, flipHorizontal = false) => {
@@ -101,7 +101,7 @@ function OptionChain() {
           color={colorByValue(option.change)}
           size="small"
         >
-          {option.currentPrice}
+          {formattedAmount(option.currentPrice)}
         </Typography>
         <Typography
           color={colorByValue(option.change)}

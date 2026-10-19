@@ -5,7 +5,7 @@ import {
   CardContent,
   Grid2 as Grid,
 } from "@mui/material";
-import { PnL, PortfolioMetrics } from "@components";
+import { PnL, PnlGraph } from "@components";
 
 function PortfolioCard() {
   const portfolio = useSelector((state) => state.portfolio);
@@ -46,7 +46,9 @@ function PortfolioCard() {
     const expectancy =
       winRate * avgWin - lossRate * avgLoss;
 
+      console.log("positions", positions);
     setMetrics({
+      positions: Object.values(positions),
       pnls,
       totalTrades,
       winCount,
@@ -105,7 +107,7 @@ function PortfolioCard() {
           </Grid>
 
           <Grid item size={6}>
-            <PortfolioMetrics metrics={metrics} />
+            <PnlGraph metrics={metrics} />
           </Grid>
         </Grid>
       </CardContent>

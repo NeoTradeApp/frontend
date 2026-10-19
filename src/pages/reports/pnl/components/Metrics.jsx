@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import {
+  Box,
   Card,
   CardContent,
   Grid2 as Grid,
 } from "@mui/material";
-import { Typography, PnL, PortfolioMetrics } from "@components";
+import { Typography, PnL, PnlGraph, WinProbability } from "@components";
 
 function Metrics(props) {
   const { positions: positionsFromProps = [] } = props;
@@ -85,6 +86,7 @@ function Metrics(props) {
     const { brokerage, taxes } = calculateBrokerageAndTaxes(positionsFromProps);
 
     setMetrics({
+      positions: positionsFromProps,
       realisedPnl: calculatePnl(positionsFromProps),
       charges: brokerage + taxes,
       brokerage,
@@ -114,47 +116,55 @@ function Metrics(props) {
         <Grid container spacing={2}>
           <Grid item size={6}>
             <Grid container spacing={2}>
-              <Grid item size={4}>
-                <PnL label="Realised P&L" value={metrics.realisedPnl} />
+              <Grid item size={5}>
+                <Box sx={{ padding: "0.5rem 0" }}>
+                  <PnL label="Realised P&L" value={metrics.realisedPnl} />
+                </Box>
+                <Box sx={{ padding: "0.5rem 0" }}>
+                  <PnL label="Net Realised P&L" value={metrics.realisedPnl - metrics.charges} />
+                </Box>
+                <Box sx={{ padding: "0.5rem 0" }}>
+                  <Typography variant="subtitle2" component="span"> Total Trades </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    component="div"
+                    sx={{ flexGrow: 1 }}
+                  >
+                    {positionsFromProps.length}
+                  </Typography>
+                </Box>
               </Grid>
 
-              <Grid item size={4}>
+              <Grid item size={3}>
                 <PnL label="Charges" value={-metrics.charges} />
                 <PnL label="Brokerage" value={-metrics.brokerage} variant={"caption"} />
                 <PnL label="Taxes" value={-metrics.taxes} variant={"caption"} />
               </Grid>
-
+              {/*
               <Grid item size={4}>
                 <PnL label="Net Realised P&L" value={metrics.realisedPnl - metrics.charges} />
-              </Grid>
+              </Grid> */}
 
               <Grid item size={4}>
-                <PnL label="Expectancy" value={metrics.expectancy} />
-              </Grid>
-
-              <Grid item size={4}>
-                <PnL label="Avg Win" value={metrics.avgWin} />
-              </Grid>
-
-              <Grid item size={4}>
-                <PnL label="Avg Loss" value={-metrics.avgLoss} />
-              </Grid>
-
-              <Grid item size={4}>
-                <Typography variant="subtitle2" component="span"> Total Trades </Typography>
-                <Typography
-                  variant="subtitle1"
-                  component="div"
-                  sx={{ flexGrow: 1 }}
-                >
-                  {positionsFromProps.length}
-                </Typography>
+                <Box sx={{ padding: "0.5rem 0" }}>
+                  <PnL label="Expectancy" value={metrics.expectancy} />
+                </Box>
+                <Box sx={{ padding: "0.5rem 0" }}>
+                  <PnL label="Avg Win" value={metrics.avgWin} />
+                </Box>
+                <Box sx={{ padding: "0.5rem 0" }}>
+                  <PnL label="Avg Loss" value={-metrics.avgLoss} />
+                </Box>
               </Grid>
             </Grid>
           </Grid>
-
           <Grid item size={6}>
-            <PortfolioMetrics metrics={metrics} />
+            <WinProbability metrics={metrics} />
+          </Grid>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item size={12}>
+            <PnlGraph metrics={metrics} />
           </Grid>
         </Grid>
       </CardContent>
