@@ -46,7 +46,6 @@ function PortfolioCard() {
     const expectancy =
       winRate * avgWin - lossRate * avgLoss;
 
-      console.log("positions", positions);
     setMetrics({
       positions: Object.values(positions),
       pnls,

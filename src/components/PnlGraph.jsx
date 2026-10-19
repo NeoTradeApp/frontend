@@ -12,6 +12,7 @@ export default function PnlGraph(props) {
 
   let sum = 0;
   const dataset = (metrics?.positions || [])
+    .sort((a, b) => new Date(a.exitTime) - new Date(b.exitTime))
     .filter(p => p.pnl !== null && !isNaN(p.pnl) && p.status === "CLOSED")
     .map((p, index) => {
       sum += toNumber(p.pnl);
@@ -72,4 +73,4 @@ export default function PnlGraph(props) {
       />
     </Box>
   );
-}
+};

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import moment from "moment";
 import { Grid2 as Grid, Box, Typography, Stack, Chip } from "@mui/material";
 import { getDayWisePnl } from "@api";
@@ -12,11 +12,12 @@ function PnlReportsView() {
   const [selectedDay, setSelectedDay] = useState(null);
   const [dayWisePnl, setDayWisePnl] = useState([]);
 
-  const allPositions = dayWisePnl.reduce((acc, day) => {
-    acc = [...acc, ...(day.positions || [])];
+  const allPositions = useMemo(() =>
+    dayWisePnl.reduce((acc, day) => {
+      acc = [...acc, ...(day.positions || [])];
 
-    return acc;
-  }, []);
+      return acc;
+    }, []), [dayWisePnl]);
 
   const handleFilter = async (filter) => {
     const pnls = await getDayWisePnl(filter.strategyId, selectKeys(filter, "fromDate", "toDate")) || [];
