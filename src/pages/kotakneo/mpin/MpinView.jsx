@@ -1,8 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardHeader, CardContent, FormHelperText } from "@mui/material";
 import { Key as KeyIcon } from "@mui/icons-material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { MuiOtpInput } from "mui-one-time-password-input";
+
+const OTP_LENGTH = 6;
 
 function MpinView(props) {
   const { onSubmit: emitSubmit } = props;
@@ -13,10 +15,19 @@ function MpinView(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [helperText, setHelperText] = useState("");
 
-  const buttonRef = useRef(null);
+  const submitButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (enableValidateButton) {
+      submitButtonRef.current?.focus();
+    }
+  }, [enableValidateButton]);
 
   const handleChange = (newValue) => {
     setMpin(newValue);
+    if (newValue.length < OTP_LENGTH) {
+      setEnableValidateButton(false);
+    }
   };
 
   const handleSubmit = () => {
@@ -39,7 +50,7 @@ function MpinView(props) {
 
   const handleOtpComplete = () => {
     setEnableValidateButton(true);
-    buttonRef.current?.focus();
+    submitButtonRef.current?.focus();
   };
 
   return (
@@ -50,11 +61,16 @@ function MpinView(props) {
         <MuiOtpInput
           value={mpin}
           onChange={handleChange}
-          length={6}
+          length={OTP_LENGTH}
           TextFieldsProps={{ type: "password" }}
           validateChar={(text) => !isNaN(Number(text))}
           onComplete={handleOtpComplete}
           autoFocus={true}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && enableValidateButton) {
+              handleSubmit();
+            }
+          }}
         />
       </CardContent>
 
@@ -71,7 +87,7 @@ function MpinView(props) {
           disabled={!enableValidateButton}
           fullWidth
           onClick={handleSubmit}
-          ref={buttonRef}
+          ref={submitButtonRef}
         >
           Verify
         </LoadingButton>
