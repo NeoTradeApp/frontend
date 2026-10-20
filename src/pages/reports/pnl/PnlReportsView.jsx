@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import moment from "moment";
 import { Grid2 as Grid, Box, Typography, Stack, Chip } from "@mui/material";
 import { getDayWisePnl } from "@api";
@@ -11,13 +11,6 @@ import { selectKeys, titleize } from "@utils"
 function PnlReportsView() {
   const [selectedDay, setSelectedDay] = useState(null);
   const [dayWisePnl, setDayWisePnl] = useState([]);
-
-  const allPositions = useMemo(() =>
-    dayWisePnl.reduce((acc, day) => {
-      acc = [...acc, ...(day.positions || [])];
-
-      return acc;
-    }, []), [dayWisePnl]);
 
   const handleFilter = async (filter) => {
     const pnls = await getDayWisePnl(filter.strategyId, selectKeys(filter, "fromDate", "toDate")) || [];
@@ -81,15 +74,6 @@ function PnlReportsView() {
             selectedDate={selectedDay?.date}
             onBlockClick={handleDayBlockClick}
           />
-        </Grid>
-
-        <Grid item size={6}>
-          <Grid container spacing={2}>
-            <Grid item size={12}>
-              <Metrics positions={allPositions} />
-            </Grid>
-          </Grid>
-
           <Grid container spacing={2}>
             <Grid item size={12}>
               {
@@ -108,6 +92,14 @@ function PnlReportsView() {
                   }]} />
                 )
               }
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item size={6}>
+          <Grid container spacing={2}>
+            <Grid item size={12}>
+              <Metrics dayWisePnl={dayWisePnl} />
             </Grid>
           </Grid>
         </Grid>

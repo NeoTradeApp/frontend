@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Box,
   Card,
@@ -8,8 +8,15 @@ import {
 import { Typography, PnL, PnlGraph, WinProbability } from "@components";
 
 function Metrics(props) {
-  const { positions: positionsFromProps = [] } = props;
+  const { dayWisePnl } = props;
   const [metrics, setMetrics] = useState({});
+
+  const allPositions = useMemo(() =>
+    dayWisePnl.reduce((acc, day) => {
+      acc = [...acc, ...(day.positions || [])];
+
+      return acc;
+    }, []), [dayWisePnl]);
 
   const calculatePnl = (positions) => {
     let realisedPnl = 0;
@@ -51,7 +58,7 @@ function Metrics(props) {
   };
 
   useEffect(() => {
-    const pnls = Object.values(positionsFromProps)
+    const pnls = Object.values(allPositions)
       .filter(p => p.pnl !== null && !isNaN(p.pnl) && p.status === "CLOSED")
       .map(p => Number(p.pnl));
 
@@ -83,11 +90,11 @@ function Metrics(props) {
     const expectancy =
       winRate * avgWin - lossRate * avgLoss;
 
-    const { brokerage, taxes } = calculateBrokerageAndTaxes(positionsFromProps);
+    const { brokerage, taxes } = calculateBrokerageAndTaxes(allPositions);
 
     setMetrics({
-      positions: positionsFromProps,
-      realisedPnl: calculatePnl(positionsFromProps),
+      positions: allPositions,
+      realisedPnl: calculatePnl(allPositions),
       charges: brokerage + taxes,
       brokerage,
       taxes,
@@ -108,7 +115,7 @@ function Metrics(props) {
 
       expectancy,
     });
-  }, [positionsFromProps]);
+  }, [allPositions]);
 
   return (
     <Card>
@@ -130,7 +137,7 @@ function Metrics(props) {
                     component="div"
                     sx={{ flexGrow: 1 }}
                   >
-                    {positionsFromProps.length}
+                    {allPositions.length} ({Object.keys(dayWisePnl).length} days)
                   </Typography>
                 </Box>
               </Grid>
@@ -164,7 +171,7 @@ function Metrics(props) {
         </Grid>
         <Grid container spacing={2}>
           <Grid item size={12}>
-            <PnlGraph metrics={metrics} />
+            <PnlGraph metrics={metrics} includeDrawdowns={true} />
           </Grid>
         </Grid>
       </CardContent>
