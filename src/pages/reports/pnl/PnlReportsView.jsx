@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import moment from "moment";
 import { Grid2 as Grid, Box, Typography, Stack, Chip } from "@mui/material";
 import { getDayWisePnl } from "@api";
@@ -12,10 +12,14 @@ function PnlReportsView() {
   const [selectedDay, setSelectedDay] = useState(null);
   const [dayWisePnl, setDayWisePnl] = useState([]);
 
+  const reportFilterRef = useRef(null);
+
   const handleFilter = async (filter) => {
+    reportFilterRef.current.setLoading(true);
     const pnls = await getDayWisePnl(filter.strategyId, selectKeys(filter, "fromDate", "toDate")) || [];
     setDayWisePnl(pnls);
     setSelectedDay(null);
+    reportFilterRef.current.setLoading(false);
   };
 
   const handleDayBlockClick = (date) => {
@@ -66,7 +70,7 @@ function PnlReportsView() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4}>
         <Grid item size={12}>
-          <ReportFilters onSubmit={handleFilter} />
+          <ReportFilters onSubmit={handleFilter} ref={reportFilterRef} />
         </Grid>
         <Grid item size={6}>
           <PnlHeatMap
@@ -80,15 +84,17 @@ function PnlReportsView() {
                 selectedDay && (
                   <TabView tabs={[{
                     heading: tabHeading(selectedDay),
-                    panel: <>
-                      {
-                        (selectedDay.positions || [])
-                          .sort((a, b) => new Date(b.entryTime) - new Date(a.entryTime))
-                          .map((position, index) => (
-                            <Position key={index} strategyId={position.strategyId} position={position} />
-                          ))
-                      }
-                    </>
+                    panel: (
+                      <Box>
+                        {
+                          (selectedDay.positions || [])
+                            .sort((a, b) => new Date(b.entryTime) - new Date(a.entryTime))
+                            .map((position, index) => (
+                              <Position key={index} strategyId={position.strategyId} position={position} />
+                            ))
+                        }
+                      </Box>
+                    )
                   }]} />
                 )
               }

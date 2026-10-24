@@ -2,13 +2,12 @@ import { useState } from "react";
 import moment from "moment";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { FormControlLabel, Checkbox, Box } from "@mui/material";
+import { toNumber } from "@utils";
 
 
 export default function PnlGraph(props) {
   const { metrics } = props;
   const [includeCharges, setIncludeCharges] = useState(true);
-
-  const toNumber = (n) => Number(n) || 0;
 
   let cumulativePnL = 0;
   const dataset = (metrics?.positions || [])

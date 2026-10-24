@@ -6,6 +6,7 @@ import {
   Grid2 as Grid,
 } from "@mui/material";
 import { Typography, PnL, PnlGraph, WinProbability } from "@components";
+import { toNumber } from "@utils";
 
 function Metrics(props) {
   const { dayWisePnl } = props;
@@ -58,9 +59,10 @@ function Metrics(props) {
   };
 
   useEffect(() => {
-    const pnls = Object.values(allPositions)
-      .filter(p => p.pnl !== null && !isNaN(p.pnl) && p.status === "CLOSED")
-      .map(p => Number(p.pnl));
+    const closedPositions = Object.values(allPositions)
+      .filter(p => p.pnl !== null && !isNaN(p.pnl) && p.status === "CLOSED");
+
+    const pnls = closedPositions.map(p => toNumber(p.pnl));
 
     const totalTrades = pnls.length;
 
@@ -93,13 +95,12 @@ function Metrics(props) {
     const { brokerage, taxes } = calculateBrokerageAndTaxes(allPositions);
 
     setMetrics({
-      positions: allPositions,
+      positions: closedPositions,
       realisedPnl: calculatePnl(allPositions),
       charges: brokerage + taxes,
       brokerage,
       taxes,
 
-      pnls,
       totalTrades,
       winCount,
       lossCount,

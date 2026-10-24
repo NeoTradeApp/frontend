@@ -14,23 +14,16 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import { toNumber } from "@utils";
 
 export default function PnlGraph(props) {
   const { metrics, includeDrawdowns = false } = props;
   const [includeCharges, setIncludeCharges] = useState(true);
 
-  const toNumber = (n) => Number(n) || 0;
-
   let cumulativePnL = 0;
 
   const dataset = [...(metrics?.positions || [])]
     .sort((a, b) => new Date(a.exitTime) - new Date(b.exitTime))
-    .filter(
-      (p) =>
-        p.pnl !== null &&
-        !isNaN(p.pnl) &&
-        p.status === "CLOSED"
-    )
     .map((p) => {
       cumulativePnL += toNumber(p.pnl);
 

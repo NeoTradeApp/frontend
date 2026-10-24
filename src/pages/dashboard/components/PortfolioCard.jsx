@@ -6,6 +6,7 @@ import {
   Grid2 as Grid,
 } from "@mui/material";
 import { PnL, PnlGraph } from "@components";
+import { toNumber } from "@utils";
 
 function PortfolioCard() {
   const portfolio = useSelector((state) => state.portfolio);
@@ -14,9 +15,10 @@ function PortfolioCard() {
   const [metrics, setMetrics] = useState({});
 
   useEffect(() => {
-    const pnls = Object.values(positions)
-      .filter(p => p.pnl !== null && !isNaN(p.pnl) && p.status === "CLOSED")
-      .map(p => Number(p.pnl));
+    const closedPositions = Object.values(positions)
+      .filter(p => p.pnl !== null && !isNaN(p.pnl) && p.status === "CLOSED");
+
+    const pnls = closedPositions.map(p => toNumber(p.pnl));
 
     const totalTrades = pnls.length;
 
@@ -47,8 +49,7 @@ function PortfolioCard() {
       winRate * avgWin - lossRate * avgLoss;
 
     setMetrics({
-      positions: Object.values(positions),
-      pnls,
+      positions: closedPositions,
       totalTrades,
       winCount,
       lossCount,

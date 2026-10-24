@@ -7,3 +7,5 @@ export const formattedAmount = (amount) => {
 
   return value.toFixed(2);
 };
+
+export const toNumber = (n) => Number(n) || 0;

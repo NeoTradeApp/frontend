@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import moment from "moment";
 import {
   Box,
@@ -9,6 +9,8 @@ import {
   Button,
   Select,
 } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 import {
   LocalizationProvider,
@@ -19,7 +21,7 @@ import { titleize } from "@utils";
 
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
-const ReportFilters = (props) => {
+const ReportFilters = (props, ref) => {
   const { onSubmit: emitSubmit } = props;
 
   const [strategyOptions, setStrategyOptions] = useState([]);
@@ -28,6 +30,11 @@ const ReportFilters = (props) => {
     fromDate: moment().startOf("year"),
     toDate: moment(),
   });
+  const [loading, setLoading] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    setLoading: (status) => setLoading(status),
+  }), []);
 
   const mandatoryFieldsPresent = [
     "strategyId", "fromDate", "toDate",
@@ -161,10 +168,10 @@ const ReportFilters = (props) => {
             />
           )}
         />
-
-        <Button
+        <LoadingButton
+          loading={loading}
+          loadingPosition="start"
           variant="contained"
-          size="medium"
           sx={{
             minWidth: 100,
             height: 40,
@@ -175,10 +182,10 @@ const ReportFilters = (props) => {
           disabled={!mandatoryFieldsPresent}
         >
           Go
-        </Button>
+        </LoadingButton>
       </Paper>
     </LocalizationProvider>
   );
 };
 
-export default ReportFilters;
+export default forwardRef(ReportFilters);

@@ -45,10 +45,10 @@ export const subscribePositionUpdate = () => {
 
       if (position.status === "CLOSED") {
         if (position.pnl > 0) {
-          store.dispatch(openSnackbar(`Trade exit with profit: ₹ ${formattedAmount(position.pnl)}`));
+          store.dispatch(openSnackbar(`Trade ${position.name} exit with profit: ₹ ${formattedAmount(position.pnl)}`));
           alarmService.playProfitSound()
         } else {
-          store.dispatch(openSnackbar(`Trade exit with loss: ₹ ${formattedAmount(position.pnl)}`));
+          store.dispatch(openSnackbar(`Trade ${position.name} exit with loss: ₹ ${formattedAmount(position.pnl)}`));
           alarmService.playLossSound();
         }
       }

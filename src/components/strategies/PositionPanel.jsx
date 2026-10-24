@@ -11,7 +11,12 @@ function PositionPanel(props) {
   }, [positionsFromProps]);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        height: "50dvh",
+        overflowY: 'auto',
+      }}
+    >
       {
         positions
           .sort((a, b) => new Date(b.entryTime) - new Date(a.entryTime))

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Typography, Tooltip, Zoom } from "@mui/material";
 import moment from "moment";
-import { formattedAmount } from "@utils";
+import { formattedAmount, toNumber } from "@utils";
 
 const CELL_SIZE = 18;
 
@@ -93,7 +93,7 @@ const PnlHeatMap = (props) => {
   data.forEach((d) => {
     pnlMap.set(
       moment(d.date).format("YYYY-MM-DD"),
-      Number(d.pnl)
+      toNumber(d.pnl)
     );
   });
 

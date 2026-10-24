@@ -10,7 +10,7 @@ function TabHeading(props) {
   const positions = strategy?.positions || [];
 
   const strategyWisePnl = useSelector((state) => state.portfolio.strategyWisePnl[strategy.id]);
-  const pnl = (strategyWisePnl?.unrealisedPnl || 0) + (strategyWisePnl?.realisedPnl || 0);
+  const pnl = (strategyWisePnl?.unrealisedPnl) + (strategyWisePnl?.realisedPnl);
 
   const totalCharges = positions.reduce((charges, pos) => {
     if (!pos?.orders) return charges;

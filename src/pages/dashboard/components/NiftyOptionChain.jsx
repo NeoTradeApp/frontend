@@ -115,34 +115,45 @@ function OptionChain() {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ marginTop: "1rem" }}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="left">CALL OI</TableCell>
-            <TableCell align="left"></TableCell>
+    <Box
+      sx={{
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+        height: "78dvh", // Full viewport height
+        width: "100%",
+        flexGrow: 1,
+      }}
+    >
+      <TableContainer component={Paper} sx={{ marginTop: "1rem" }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">CALL OI</TableCell>
+              <TableCell align="left"></TableCell>
 
-            <TableCell align="left">CALL LTP</TableCell>
-            <TableCell align="center">STRIKE</TableCell>
-            <TableCell align="right">PUT LTP</TableCell>
+              <TableCell align="left">CALL LTP</TableCell>
+              <TableCell align="center">STRIKE</TableCell>
+              <TableCell align="right">PUT LTP</TableCell>
 
-            <TableCell align="right">PUT OI</TableCell>
-            <TableCell align="right"></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Object.keys(niftyOptionChain).sort((a, b) => b - a).map((strike) => (
-            <TableRow key={strike}>
-              {
-                niftyOptionChain[strike]?.isSpot
-                ? renderSpot(strike, niftyOptionChain[strike]?.label)
-                : renderOption(strike)
-              }
+              <TableCell align="right">PUT OI</TableCell>
+              <TableCell align="right"></TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {Object.keys(niftyOptionChain).sort((a, b) => b - a).map((strike) => (
+              <TableRow key={strike}>
+                {
+                  niftyOptionChain[strike]?.isSpot
+                    ? renderSpot(strike, niftyOptionChain[strike]?.label)
+                    : renderOption(strike)
+                }
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }
 

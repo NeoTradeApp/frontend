@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { formattedAmount } from "@utils";
+import { formattedAmount, toNumber } from "@utils";
 
 const { REACT_APP_SHORT_NAME } = process.env;
 
@@ -7,7 +7,8 @@ const calculatePnl = (positions) => {
   let realisedPnl = 0;
   let unrealisedPnl = 0;
   Object.values(positions).forEach((position) => {
-    const { status, pnl } = position;
+    const { status, pnl: pnlStr } = position;
+    const pnl = toNumber(pnlStr);
 
     if (status === "ACTIVE") {
       unrealisedPnl += pnl;
@@ -22,7 +23,7 @@ const calculatePnl = (positions) => {
 const calculateCharges = (orders) =>
   Object.values(orders).reduce((charges, order) => {
     const { brokerage, taxes } = order;
-    charges += brokerage + taxes;
+    charges += toNumber(brokerage) + toNumber(taxes);
     return charges;
   }, 0);
 
@@ -30,7 +31,8 @@ const calculateStrategyWisePnl = (positions) =>
   Object.values(positions).reduce((pnlObj, position) => {
     pnlObj[position.strategyId] ||= { unrealisedPnl: 0, realisedPnl: 0, anyActivePosition: false };
 
-    const { status, pnl } = position;
+    const { status, pnl: pnlStr } = position;
+    const pnl = toNumber(pnlStr);
     if (status === "ACTIVE") {
       pnlObj[position.strategyId].unrealisedPnl += pnl;
       pnlObj[position.strategyId].anyActivePosition = true;
