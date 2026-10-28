@@ -183,7 +183,8 @@ export default function PnlGraph(props) {
             label: "P&L",
             curve: "linear",
             showMark: false,
-            color: "#1976d2",
+            // color: "#1976d2",
+            color: "#66bb6a",
           },
           {
             dataKey: "zeroRef",
