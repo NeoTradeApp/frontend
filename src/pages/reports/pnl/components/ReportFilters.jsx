@@ -139,6 +139,11 @@ const ReportFilters = (props, ref) => {
               sx={{
                 minWidth: 180,
               }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && mandatoryFieldsPresent) {
+                  handleSubmitClick();
+                }
+              }}
             />
           )}
         />
@@ -164,6 +169,11 @@ const ReportFilters = (props, ref) => {
               }
               sx={{
                 minWidth: 180,
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && mandatoryFieldsPresent) {
+                  handleSubmitClick();
+                }
               }}
             />
           )}
