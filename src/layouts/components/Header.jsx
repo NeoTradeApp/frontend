@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutButton from "./LogoutButton";
+import NetworkStatus from './NetworkStatus';
 
 const { REACT_APP_NAME, REACT_APP_DESCRIPTION } = process.env;
 
@@ -43,6 +44,7 @@ function Header(props) {
     <AppBar position="fixed" open={open}>
       <Toolbar>
         {menuIcon}
+        <NetworkStatus />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {REACT_APP_NAME}
           <Typography size="small">

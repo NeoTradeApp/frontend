@@ -93,9 +93,9 @@ export const portfolioSlice = createSlice({
 
       state.strategyWisePnl = calculateStrategyWisePnl(state.positions);
 
-      const pnl = realisedPnl + unrealisedPnl - state.charges;
-      const sign = parseInt(pnl) > 0 ? "▲" : "▼";
-      document.title = [REACT_APP_SHORT_NAME, ` ₹ ${formattedAmount(pnl)} ${sign}` || "0"].join("   |   ")
+      // const pnl = realisedPnl + unrealisedPnl - state.charges;
+      // const sign = parseInt(pnl) > 0 ? "▲" : "▼";
+      // document.title = [REACT_APP_SHORT_NAME, ` ₹ ${formattedAmount(pnl)} ${sign}` || "0"].join("   |   ")
     },
     updateAllOrders: (state, action) => {
       state.orders = action.payload.reduce((ordersObj, order) => {

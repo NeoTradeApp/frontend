@@ -9,7 +9,7 @@ import {
 import { socketService } from "./socketService";
 import { WEB_SOCKET } from "@constants";
 import { getStrategies } from "@api";
-import { alarmService } from "@services";
+import alarmService from "./alarmService";
 import { debounceWithBurst, formattedAmount } from "@utils";
 
 export const subscribePositionUpdate = () => {

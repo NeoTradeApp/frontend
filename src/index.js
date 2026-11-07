@@ -9,8 +9,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { setAuthInterceptors } from "./api/interceptors";
-import { subscribeMarketFeed } from "./services/marketFeedService";
-import { subscribePositionUpdate } from "./services/portfolioUpdateService";
+import { subscribeMarketFeed, subscribePositionUpdate } from "@services";
 
 const { REACT_APP_SHORT_NAME } = process.env;
 
