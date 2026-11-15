@@ -18,7 +18,8 @@ import { toNumber } from "@utils";
 
 export default function PnlGraph(props) {
   const { metrics, includeDrawdowns = false } = props;
-  const [includeCharges, setIncludeCharges] = useState(true);
+  const [includeBrokerage, setIncludeBrokerage] = useState(true);
+  const [includeTaxes, setIncludeTaxes] = useState(true);
 
   let cumulativePnL = 0;
 
@@ -27,17 +28,15 @@ export default function PnlGraph(props) {
     .map((p) => {
       cumulativePnL += toNumber(p.pnl);
 
-      if (includeCharges) {
-        const charges = (p?.orders || []).reduce(
-          (sum, order) =>
-            sum +
-            toNumber(order.brokerage) +
-            toNumber(order.taxes),
-          0
-        );
+      const charges = (p?.orders || []).reduce(
+        (sum, order) =>
+          sum +
+          (includeTaxes ? toNumber(order.taxes) : 0) +
+          (includeBrokerage ? toNumber(order.brokerage) : 0),
+        0
+      );
 
-        cumulativePnL -= charges;
-      }
+      cumulativePnL -= charges;
 
       return {
         date: moment(p.exitTime),
@@ -141,22 +140,29 @@ export default function PnlGraph(props) {
     connectNulls: false,
   }));
 
-  const handleIncludeChargesChange = (event) =>
-    setIncludeCharges(event.target.checked);
-
   return (
     <Box sx={{ position: "relative", width: "100%" }}>
       <FormControlLabel
         sx={{ position: "absolute", left: "10rem", zIndex: 1 }}
         control={
           <Checkbox
-            checked={includeCharges}
-            onChange={handleIncludeChargesChange}
+            checked={includeBrokerage}
+            onChange={(event) => setIncludeBrokerage(event.target.checked)}
           />
         }
-        label="Include Charges"
+        label="Include Brokerage"
       />
 
+      <FormControlLabel
+        sx={{ position: "absolute", left: "25rem", zIndex: 1 }}
+        control={
+          <Checkbox
+            checked={includeTaxes}
+            onChange={(event) => setIncludeTaxes(event.target.checked)}
+          />
+        }
+        label="Include Taxes"
+      />
 
       <LineChart
         dataset={chartDataset}
