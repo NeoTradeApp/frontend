@@ -67,12 +67,12 @@ function PnlReportsView() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, width: "100vw" }}>
       <Grid container spacing={4}>
-        <Grid item size={12}>
+        <Grid item size={{ md: 12, xs: 12 }}>
           <ReportFilters onSubmit={handleFilter} ref={reportFilterRef} />
         </Grid>
-        <Grid item size={6}>
+        <Grid item size={{ md: 6, xs: 12 }}>
           <PnlHeatMap
             data={dayWisePnl.map((data) => selectKeys(data, "date", "pnl"))}
             selectedDate={selectedDay?.date}
@@ -102,7 +102,7 @@ function PnlReportsView() {
           </Grid>
         </Grid>
 
-        <Grid item size={6}>
+        <Grid item size={{ md: 6, xs: 12 }}>
           <Grid container spacing={2}>
             <Grid item size={12}>
               <Metrics dayWisePnl={dayWisePnl} />

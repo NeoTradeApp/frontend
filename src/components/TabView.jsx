@@ -37,7 +37,7 @@ export default function TabView(props) {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ maxWidth: "100vw" }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
           value={value}
@@ -54,13 +54,15 @@ export default function TabView(props) {
           })}
         </Tabs>
       </Box>
-      {tabs.map((tab, index) => {
-        return (
-          <CustomTabPanel key={index} value={value} index={index}>
-            {tab.panel}
-          </CustomTabPanel>
-        )
-      })}
+      <Box sx={{ maxHeight: "700px", overflowY: "auto" }}>
+        {tabs.map((tab, index) => {
+          return (
+            <CustomTabPanel key={index} value={value} index={index}>
+              {tab.panel}
+            </CustomTabPanel>
+          )
+        })}
+      </Box>
     </Box>
   );
 }

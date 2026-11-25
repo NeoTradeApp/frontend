@@ -71,7 +71,7 @@ function PortfolioCard() {
     <Card>
       <CardContent>
         <Grid container spacing={2}>
-          <Grid item size={6}>
+          <Grid item size={{ md: 6, xs: 12 }}>
             <Grid container spacing={2}>
               <Grid item size={6}>
                 <PnL label="Unrealised P&L" value={portfolio.unrealisedPnl} />
@@ -106,7 +106,7 @@ function PortfolioCard() {
             </Grid>
           </Grid>
 
-          <Grid item size={6}>
+          <Grid item size={{ md: 6, xs: 12 }}>
             <PnlGraph metrics={metrics} />
           </Grid>
         </Grid>

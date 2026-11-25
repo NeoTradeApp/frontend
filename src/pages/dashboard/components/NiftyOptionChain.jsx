@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import {
   Box,
@@ -31,6 +32,11 @@ function OptionChain() {
       ...nifty50Fut,
     }
   }
+
+  const niftySpot = useRef(null);
+  useEffect(() => {
+    niftySpot.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
   const colorByValue = (value) => {
     const isPositive = parseInt(value || 0) >= 0;
@@ -78,7 +84,7 @@ function OptionChain() {
     if (!spot) return;
 
     return (
-      <TableCell colSpan={7} align="center">
+      <TableCell ref={niftySpot} colSpan={7} align="center">
         <Box sx={{
           border: "solid 1px rgba(255,255,255,0.3)",
           borderRadius: "30px",
@@ -121,7 +127,7 @@ function OptionChain() {
         display: "flex",
         flexDirection: "column",
         height: "78dvh", // Full viewport height
-        width: "100%",
+        width: "100vw",
         flexGrow: 1,
       }}
     >

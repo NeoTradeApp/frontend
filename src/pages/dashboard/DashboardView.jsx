@@ -9,25 +9,24 @@ function DashboardView() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-        {/* <Grid item size={12}></Grid> */}
-        <Grid item size={6}>
+        <Grid item size={{ md: 6, xs: 12 }}>
           <Grid container spacing={2}>
-            <Grid item size={6}>
+            <Grid item size={{ md: 6, xs: 12 }}>
               <Nifty50Card />
             </Grid>
-            <Grid item size={6}>
+            <Grid item size={{ md: 6, xs: 12 }}>
               <Nifty50FutCard />
             </Grid>
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid item size={12}>
+            <Grid item size={{ md: 12, xs: 12 }}>
               <NiftyOptionChain />
             </Grid>
           </Grid>
         </Grid>
 
-        <Grid item size={6}>
+        <Grid item size={{ md: 6, xs: 12 }}>
           <Grid container spacing={2}>
             <Grid item size={12}>
               <PortfolioCard />
@@ -35,7 +34,7 @@ function DashboardView() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid item size={12}>
+            <Grid size={12} sx={{ minWidth: 0, maxWidth: '100%' }}>
               <Strategies />
             </Grid>
           </Grid>

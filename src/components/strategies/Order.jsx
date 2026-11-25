@@ -61,8 +61,8 @@ function Order(props) {
 
   return (
     <>
-      <Grid container spacing={12} sx={{ padding: "1rem" }}>
-        <Grid item size={3.1}>
+      <Grid container spacing={2} sx={{ padding: "1rem" }}>
+        <Grid item size={{ md: 3.1, xs: 7 }}>
           <Typography variant="subtitle2" component="div" disabled={isOrderClosed}> {orderName(entryOrder)}
             <Chip
               label={entryOrder.tnxType}
@@ -76,7 +76,11 @@ function Order(props) {
           <Typography variant="subtitle2" component="div" disabled={isOrderClosed}> Exp: {orderExpiry(entryOrder)} </Typography>
         </Grid>
 
-        <Grid item size={3.5}>
+        <Grid item size={{ md: 2.9, xs: 5 }}>
+          <PnL label="P&L" value={getPnL(entryOrder, exitOrder)} disabled={isOrderClosed} />
+        </Grid>
+
+        <Grid item size={{ md: 3.5, xs: 6 }}>
           {renderAmount("Entry price", entryOrder.price)}
           {
             exitOrder?.price
@@ -85,13 +89,9 @@ function Order(props) {
           }
         </Grid>
 
-        <Grid item size={2.5}>
+        <Grid item size={{ md: 2.5, xs: 6 }}>
           {renderAmount("Qty", entryOrder.quantity)}
           {renderAmount("Charges", formattedAmount(getTotalCharges(entryOrder) + getTotalCharges(exitOrder)))}
-        </Grid>
-
-        <Grid item size={2.9}>
-          <PnL label="P&L" value={getPnL(entryOrder, exitOrder)} disabled={isOrderClosed} />
         </Grid>
       </Grid>
       <Divider />

@@ -122,7 +122,7 @@ function Metrics(props) {
     <Card>
       <CardContent>
         <Grid container spacing={2}>
-          <Grid item size={6}>
+          <Grid item size={{ md: 6, xs: 12 }}>
             <Grid container spacing={2}>
               <Grid item size={5}>
                 <Box sx={{ padding: "0.5rem 0" }}>
@@ -166,7 +166,7 @@ function Metrics(props) {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item size={6}>
+          <Grid item size={{ md: 6, xs: 12 }}>
             <WinProbability metrics={metrics} />
           </Grid>
         </Grid>

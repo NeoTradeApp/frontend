@@ -154,7 +154,7 @@ export default function PnlGraph(props) {
       />
 
       <FormControlLabel
-        sx={{ position: "absolute", left: "25rem", zIndex: 1 }}
+        sx={{ position: "absolute", left: "10rem", top: "2rem", zIndex: 1 }}
         control={
           <Checkbox
             checked={includeTaxes}

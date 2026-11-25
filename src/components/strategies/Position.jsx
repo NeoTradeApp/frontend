@@ -102,16 +102,16 @@ function Position(props) {
       <AccordionSummary aria-controls={`${positionId}-content`} id={`${positionId}-header`}>
         <Box sx={{ flexGrow: 1, marginLeft: "2rem" }}>
           <Box sx={{ p: 2 }}>
-            <Grid container spacing={12}>
-              <Grid item size={5}>
+            <Grid container spacing={2}>
+              <Grid item size={{ md: 5, xs: 12 }}>
                 <Typography variant="subtitle1" component="span" disabled={isPositionClosed}> {position.name} </Typography>
                 {formatStatus(position.status)}
               </Grid>
-              <Grid item size={3.5}>
+              <Grid item size={{ md: 3.5, xs: 6 }}>
                 <Typography variant="subtitle2" component="div" disabled={isPositionClosed}> {"Entry at"} </Typography>
                 <Typography variant="subtitle1" component="div" disabled={isPositionClosed}> {formatDateTime(position.entryTime)} </Typography>
               </Grid>
-              <Grid item size={3.5}>
+              <Grid item size={{ md: 3.5, xs: 6 }}>
                 <Typography variant="subtitle2" component="div" disabled={isPositionClosed}> {"Exit at"} </Typography>
                 <Typography variant="subtitle1" component="div" disabled={isPositionClosed}> {formatDateTime(position.exitTime)} </Typography>
               </Grid>
@@ -121,20 +121,20 @@ function Position(props) {
           <Divider />
 
           <Box sx={{ p: 2 }}>
-            <Grid container spacing={12}>
-              <Grid item size={3.1}>
+            <Grid container spacing={2}>
+              <Grid item size={{ md: 3.1, xs: 6 }}>
                 <PnL label="Realised P&L" value={isPositionClosed ? position.pnl : 0} disabled={isPositionClosed} />
               </Grid>
 
-              <Grid item size={3}>
+              <Grid item size={{ md: 3, xs: 6 }}>
                 <PnL label="Unrealised P&L" value={isPositionActive ? position.pnl : 0} disabled={isPositionClosed} />
               </Grid>
 
-              <Grid item size={3}>
+              <Grid item size={{ md: 3, xs: 6 }}>
                 <PnL label="Target" value={position.target} disabled={isPositionClosed} />
               </Grid>
 
-              <Grid item size={2.9}>
+              <Grid item size={{ md: 2.9, xs: 6 }}>
                 <PnL label="Stoploss" value={position.stoploss} disabled={isPositionClosed} />
               </Grid>
             </Grid>
