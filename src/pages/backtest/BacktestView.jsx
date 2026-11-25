@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Grid2 as Grid, Box } from "@mui/material";
 import { LineChart, TradingViewChart } from "@components";
 import { BacktestConfigForm } from "./components";
 
@@ -49,10 +49,16 @@ function BacktestView(props) {
   // ];
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <LineChart dataSet={Object.values(series)} />
-      {/* <TradingViewChart data={testData}></TradingViewChart> */}
-      <BacktestConfigForm onSubmit={emitSubmit} onClear={() => setSeries({})} />
+    <Box>
+      <Grid container spacing={1}>
+        <Grid item size={{ md: 10, xs: 12 }}>
+          <LineChart dataSet={Object.values(series)} />
+        </Grid>
+        {/* <TradingViewChart data={testData}></TradingViewChart> */}
+        <Grid item size={{ md: 2, xs: 12 }}>
+          <BacktestConfigForm onSubmit={emitSubmit} onClear={() => setSeries({})} />
+        </Grid>
+      </Grid>
     </Box>
   );
 }

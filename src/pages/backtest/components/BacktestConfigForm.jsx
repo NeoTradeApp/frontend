@@ -3,21 +3,15 @@ import {
   Box,
   FormControl,
   TextField,
-  Grid2 as Grid,
   FormControlLabel,
   Checkbox,
   Button,
+  Toolbar,
+  List,
+  Divider,
+  ListItem,
 } from '@mui/material';
 import DropDown from './DropDown';
-
-import Drawer from '@mui/material/Drawer';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-
-
-const drawerWidth = 300;
 
 const CONFIG_PARAMS = [
   {
@@ -266,18 +260,7 @@ export default function BacktestConfigForm(props) {
   };
 
   return (
-    <Drawer
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-        },
-      }}
-      variant="permanent"
-      anchor="right"
-    >
+    <Box>
       <Toolbar />
       <Divider />
       <List>
@@ -302,6 +285,6 @@ export default function BacktestConfigForm(props) {
           </FormControl>
         </ListItem>
       </List>
-    </Drawer>
+    </Box>
   );
 }
