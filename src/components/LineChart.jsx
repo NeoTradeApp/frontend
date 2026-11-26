@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import { LineChart as MuiLineChart } from '@mui/x-charts/LineChart';
 
 const margin = { right: 24 };
@@ -9,7 +9,7 @@ const seriesOptions = {
   curve: "linear",
 }
 
-function LineChart(props) {
+function LineChart(props, ref) {
   const { dataSet = [] } = props;
 
   const [xData, setXData] = useState([]);
@@ -48,8 +48,9 @@ function LineChart(props) {
         max: 365,
       }]}
       margin={margin}
+      ref={ref}
     />
   )
 }
 
-export default LineChart;
+export default forwardRef(LineChart);

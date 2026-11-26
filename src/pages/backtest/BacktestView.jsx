@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Grid2 as Grid, Box } from "@mui/material";
 import { LineChart, TradingViewChart } from "@components";
 import { BacktestConfigForm } from "./components";
@@ -19,6 +19,8 @@ function BacktestView(props) {
   const { onSubmit: emitSubmit } = props;
   const [backtestResult] = useWebSocket(WEB_SOCKET.MESSAGE_TYPE.BACKTEST.UPDATE)
   const [series, setSeries] = useState({});
+
+  const lineChartRef = useRef(null);
 
   useEffect(() => {
     const { backtestJobId, params, payload = [] } = backtestResult || {};
@@ -48,15 +50,20 @@ function BacktestView(props) {
   //   { time: "2018-12-31", value: 22.67 },
   // ];
 
+  const handleSubmit = () => {
+    lineChartRef.current?.scrollIntoView({ behavior: 'smooth' });
+    emitSubmit && emitSubmit();
+  }
+
   return (
     <Box>
       <Grid container spacing={1}>
         <Grid item size={{ md: 10, xs: 12 }}>
-          <LineChart dataSet={Object.values(series)} />
+          <LineChart dataSet={Object.values(series)} ref={lineChartRef} />
         </Grid>
         {/* <TradingViewChart data={testData}></TradingViewChart> */}
         <Grid item size={{ md: 2, xs: 12 }}>
-          <BacktestConfigForm onSubmit={emitSubmit} onClear={() => setSeries({})} />
+          <BacktestConfigForm onSubmit={handleSubmit} onClear={() => setSeries({})} />
         </Grid>
       </Grid>
     </Box>

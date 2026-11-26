@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthentionStatus } from "@redux/userSlice";
@@ -18,7 +19,7 @@ import {
 } from "@mui/icons-material";
 
 import { logoutApi } from "@api";
-
+import { ModalDialog } from "@components"
 import MenuList from "./MenuList";
 
 const drawerWidth = 240;
@@ -103,6 +104,7 @@ const MENU_LIST = [
 
 function SideMenubar(props) {
   const { open, icon } = props;
+  const dialogRef = useRef(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -119,7 +121,7 @@ function SideMenubar(props) {
   const logoutMenu = {
     label: "Logout",
     icon: <LogoutIcon />,
-    onClick: handleLogout,
+    onClick: () => dialogRef.current?.open(),
   };
 
   return (
@@ -131,6 +133,14 @@ function SideMenubar(props) {
       <MenuList menuList={MENU_LIST} open={open} />
       <Divider />
       <MenuList menuList={[logoutMenu]} open={open} />
+      <ModalDialog
+        ref={dialogRef}
+        title={"Confirm Logout"}
+        body={"Are you sure you want to log out?"}
+        submitButtonLabel={"Yes"}
+        cancelButtonLabel={"No"}
+        onSubmit={handleLogout}
+      />
     </Drawer>
   );
 }

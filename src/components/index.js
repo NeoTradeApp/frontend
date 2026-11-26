@@ -7,4 +7,5 @@ export { default as PnL } from "./PnL";
 export { default as Typography } from "./Typography";
 export { default as PnlGraph } from "./PnlGraph";
 export { default as WinProbability } from "./WinProbability";
+export { default as ModalDialog } from "./ModalDialog";
 export * from "./strategies";
