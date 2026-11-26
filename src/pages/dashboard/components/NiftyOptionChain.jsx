@@ -127,7 +127,10 @@ function OptionChain() {
         display: "flex",
         flexDirection: "column",
         height: "78dvh", // Full viewport height
-        width: "100vw",
+        width: {
+          xs: '100vw', // Mobile screens (0px and up)
+          sm: 'auto',  // Tablets & larger screens (600px and up)
+        },
         flexGrow: 1,
       }}
     >
