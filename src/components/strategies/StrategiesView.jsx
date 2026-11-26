@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Typography, Stack, Chip } from "@mui/material";
+import { Grid2 as Grid, Typography, Stack, Chip } from "@mui/material";
 import { TabView, PnL } from "@components";
 import { titleize } from "@utils";
 import PositionPanel from "./PositionPanel";
+import MoreOptionsMenu from "./MoreOptionsMenu";
 
 function TabHeading(props) {
   const { strategy } = props;
@@ -12,40 +13,56 @@ function TabHeading(props) {
   const strategyWisePnl = useSelector((state) => state.portfolio.strategyWisePnl[strategy.id]);
   const pnl = (strategyWisePnl?.unrealisedPnl) + (strategyWisePnl?.realisedPnl);
 
-  const totalCharges = positions.reduce((charges, pos) => {
-    if (!pos?.orders) return charges;
+  let taxes = 0;
+  let brokerage = 0;
+  positions.forEach((pos) => {
+    if (!pos?.orders) return;
 
-    return charges + pos.orders.reduce((s, order) =>
-      s + (order?.brokerage || 0) + (order?.taxes || 0), 0)
-  }, 0);
+    pos.orders.forEach((order) => {
+      taxes += order?.taxes || 0;
+      brokerage += order?.brokerage || 0;
+    });
+  });
 
   return (
-    <>
-      <Stack direction="row" spacing={0.55} alignItems="left">
-        <Typography variant="span">
-          {titleize(strategy.strategyName)}
-        </Typography>
-        <Chip
-          label={positions.length}
-          variant={strategyWisePnl?.anyActivePosition ? "filled" : "outlined"}
-          color="info"
-          size="small"
-        />
-      </Stack>
-      <Stack direction="row" spacing={2} alignItems="center">
-        <PnL
-          label={"PnL"}
-          value={pnl}
-        />
-      </Stack>
-      <Stack direction="row" spacing={2} alignItems="center">
-        <PnL
-          label={"Charges"}
-          value={-totalCharges}
-          variant={"caption"}
-        />
-      </Stack>
-    </>
+    <Grid container>
+      <Grid item size={11}>
+        <Stack direction="row" spacing={0.55} alignItems="left">
+          <Typography variant="span">
+            {titleize(strategy.strategyName)}
+          </Typography>
+          <Chip
+            label={positions.length}
+            variant={strategyWisePnl?.anyActivePosition ? "filled" : "outlined"}
+            color="info"
+            size="small"
+          />
+        </Stack>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <PnL
+            label={"PnL"}
+            value={pnl}
+          />
+        </Stack>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <PnL
+            label={"Taxes"}
+            value={-taxes}
+            variant={"caption"}
+          />
+        </Stack>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <PnL
+            label={"Brokerage"}
+            value={-brokerage}
+            variant={"caption"}
+          />
+        </Stack>
+      </Grid>
+      <Grid item size={1}>
+        <MoreOptionsMenu />
+      </Grid>
+    </Grid>
   )
 }
 
@@ -58,12 +75,14 @@ function StrategiesView(props) {
   }, [strategiesFromProps]);
 
   return (
-    <TabView tabs={
-      Object.values(strategies || {}).map((strategy, index) => ({
-        heading: <TabHeading strategy={strategy} />,
-        panel: <PositionPanel key={index} strategyId={strategy.id} positions={strategy.positions} />
-      }))
-    } />
+    <TabView
+      tabs={
+        Object.values(strategies || {}).map((strategy, index) => ({
+          heading: <TabHeading strategy={strategy} />,
+          panel: <PositionPanel key={index} strategyId={strategy.id} positions={strategy.positions} />
+        }))
+      }
+    />
   );
 }
 

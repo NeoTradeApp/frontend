@@ -11,14 +11,20 @@ function MenuList(props) {
   const { menuList = [], open } = props;
   const navigate = useNavigate();
 
-  const navigateToPath = (path) => navigate(path);
+  const handleClick = (menu) => {
+    const { path, onClick } = menu || {};
+
+    if (path) return navigate(path);
+
+    if (onClick) return onClick();
+  };
 
   return (
     <List>
       {menuList.map((menu) => (
         <ListItem key={menu.label} disablePadding sx={{ display: 'block' }}>
           <ListItemButton
-            onClick={() => navigateToPath(menu.path)}
+            onClick={() => handleClick(menu)}
             sx={[
               {
                 minHeight: 48,

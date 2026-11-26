@@ -1,3 +1,7 @@
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuthentionStatus } from "@redux/userSlice";
+
 import { styled } from "@mui/material/styles";
 
 import {
@@ -9,8 +13,11 @@ import {
   Speed as SpeedIcon,
   Dashboard as DashboardIcon,
   TrendingUp as TrendingUpIcon,
-  StackedBarChart as StackedBarChartIcon
+  StackedBarChart as StackedBarChartIcon,
+  Logout as LogoutIcon,
 } from "@mui/icons-material";
+
+import { logoutApi } from "@api";
 
 import MenuList from "./MenuList";
 
@@ -95,16 +102,35 @@ const MENU_LIST = [
 ];
 
 function SideMenubar(props) {
-  const { open, collapseIcon } = props;
+  const { open, icon } = props;
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    logoutApi()
+      .then(() => {
+        dispatch(setAuthentionStatus(false));
+        navigate("/login");
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const logoutMenu = {
+    label: "Logout",
+    icon: <LogoutIcon />,
+    onClick: handleLogout,
+  };
 
   return (
     <Drawer variant="permanent" open={open}>
       <DrawerHeader>
-        {collapseIcon}
+        {icon}
       </DrawerHeader>
       <Divider />
       <MenuList menuList={MENU_LIST} open={open} />
       <Divider />
+      <MenuList menuList={[logoutMenu]} open={open} />
     </Drawer>
   );
 }

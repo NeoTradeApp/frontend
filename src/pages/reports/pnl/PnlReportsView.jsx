@@ -31,12 +31,16 @@ function PnlReportsView() {
     const positions = (day?.positions || []);
     const formattedDate = moment(day.date).format("ddd MMM DD, YYYY");
 
-    const totalCharges = positions.reduce((charges, pos) => {
-      if (!pos?.orders) return charges;
+    let taxes = 0;
+    let brokerage = 0;
+    positions.forEach((pos) => {
+      if (!pos?.orders) return;
 
-      return charges + pos.orders.reduce((s, order) =>
-        s + (order?.brokerage || 0) + (order?.taxes || 0), 0)
-    }, 0);
+      pos.orders.forEach((order) => {
+        taxes += order?.taxes || 0;
+        brokerage += order?.brokerage || 0;
+      });
+    });
 
     return (
       <>
@@ -57,8 +61,15 @@ function PnlReportsView() {
         </Stack>
         <Stack direction="row" spacing={2} alignItems="center">
           <PnL
-            label={"Charges"}
-            value={-totalCharges}
+            label={"Taxes"}
+            value={-taxes}
+            variant={"caption"}
+          />
+        </Stack>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <PnL
+            label={"Brokerage"}
+            value={-brokerage}
             variant={"caption"}
           />
         </Stack>
